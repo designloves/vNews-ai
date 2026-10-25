@@ -1,32 +1,38 @@
 {
   "2026-10-16": {
     "file": "2026-10-16.mp3",
-    "sha": "8d15e86962d2",
-    "duration": 106.4
+    "sha": "1fb271f6db6f",
+    "duration": 114.8,
+    "voice": "bf_emma"
   },
   "2026-10-19": {
     "file": "2026-10-19.mp3",
-    "sha": "60577c91cac8",
-    "duration": 99.3
+    "sha": "17a950ddb430",
+    "duration": 108.5,
+    "voice": "bf_emma"
   },
   "2026-10-20": {
     "file": "2026-10-20.mp3",
-    "sha": "1e9429e0c986",
-    "duration": 105.1
+    "sha": "19bc02e28bf9",
+    "duration": 112.8,
+    "voice": "bf_emma"
   },
   "2026-10-21": {
     "file": "2026-10-21.mp3",
-    "sha": "5b6d637a1596",
-    "duration": 107.5
+    "sha": "151592768d4d",
+    "duration": 115.4,
+    "voice": "bf_emma"
   },
   "2026-10-22": {
     "file": "2026-10-22.mp3",
-    "sha": "223e28c51f9f",
-    "duration": 110.8
+    "sha": "9de812660f43",
+    "duration": 117.6,
+    "voice": "bf_emma"
   },
   "2026-10-23": {
     "file": "2026-10-23.mp3",
-    "sha": "e8670b12f6e9",
-    "duration": 110.3
+    "sha": "19dd2f253d23",
+    "duration": 118.4,
+    "voice": "bf_emma"
   }
 }
