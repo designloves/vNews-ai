@@ -45,19 +45,18 @@ button{font:inherit;color:inherit}
 .nav{background:none;border:1px solid transparent;border-radius:6px;padding:8px 8px;cursor:pointer;font-family:var(--f-label);font-size:13px;letter-spacing:.04em;color:var(--ink-2);white-space:nowrap}
 .nav:hover:not(:disabled){background:var(--paper-2);color:var(--ink)}
 .nav:disabled{opacity:.35;cursor:default}
-.mast{text-align:center;padding-block:14px 6px}
+.mast{text-align:center;padding-block:0 6px}
 /* Compact nameplate that stays pinned once the masthead has scrolled away */
 :root{--bar:0px}
-.minibar{position:fixed;left:0;right:0;top:0;z-index:30;background:var(--paper);padding-top:env(safe-area-inset-top,0px);text-align:center;
-  transform:translateY(-100%);pointer-events:none;will-change:transform}
-.minibar.on{pointer-events:auto}
-.minibar.full{box-shadow:0 8px 16px -12px rgba(0,0,0,.45)}
-.minibar button{display:block;width:100%;background:none;border:0;padding:8px 16px 9px;cursor:pointer;color:var(--ink);
-  font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-size:34px;line-height:1;transition:opacity .15s linear}
+.minibar{position:fixed;left:0;right:0;top:0;z-index:30;background:var(--paper);padding-top:env(safe-area-inset-top,0px);opacity:0;pointer-events:none}
+.minibar.full{box-shadow:0 8px 16px -12px rgba(0,0,0,.45);pointer-events:auto}
+.minibar button{display:block;width:100%;height:48px;background:none;border:0;padding:0;cursor:pointer}
 /* Solid paper behind the status bar / Dynamic Island, so nothing scrolls visibly underneath it */
 .statusbar{position:fixed;left:0;right:0;top:0;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:31;pointer-events:none}
 .nameplate{margin:0;font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-weight:400;font-size:clamp(38px,10.5vw,72px);line-height:1}
 .mast .sub{margin-top:8px}
+/* The nameplate sticks to the top of the screen; script shrinks it in step with scrolling until it locks */
+.nameplate{position:sticky;top:var(--np-top,0px);z-index:32;text-align:center;margin-top:14px;transform-origin:50% 50%;will-change:transform;pointer-events:none}
 
 /* Edition */
 #edition{touch-action:pan-y;min-height:50vh}
@@ -149,7 +148,6 @@ details[open] .more .o, details:not([open]) .more .c{display:none}
 @media (prefers-reduced-motion: reduce){.fab-row,.fab-mini .arr{animation:none!important}.fab{transition:none}}
 /* Section heads stay pinned while you read through their section */
 .sec-head{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--bar));z-index:5;background:var(--paper)}
-.sec-head::before{content:"";position:absolute;left:0;right:0;bottom:calc(100% + 3px);height:calc(env(safe-area-inset-top,0px) + var(--bar));background:var(--paper)}
 /* Newspaper section heads: heavy rule, section name on the left, an optional control on the right */
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 6px;padding-top:10px;
   border-top:3px solid var(--ink);padding-bottom:10px}
@@ -171,8 +169,8 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     <div class="when" id="when" aria-live="polite">Vertical News</div>
     <button class="nav" id="newer" type="button" aria-label="Newer edition" disabled>Newer ›</button>
   </div>
+  <h1 class="nameplate">vertical news</h1>
   <header class="mast">
-    <h1 class="nameplate">vertical news</h1>
     <div class="sub label" id="sub">AI, bearing and automotive news, every morning</div>
   </header>
   <main id="edition">
@@ -616,39 +614,38 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   })();
 
 
-  /* ---------- Pinned nameplate ----------
-     The compact nameplate slides down in step with scrolling: it starts moving as the big nameplate nears the
-     top and is fully in place by the time the big one reaches the status bar, so there is no pop and nothing
-     disappears behind the Dynamic Island. Tap it to go back to the top; section heads pin just below it. */
+  /* ---------- Sticky, shrinking nameplate ----------
+     The real nameplate sticks (CSS position: sticky, so the browser holds it steady) and shrinks as you scroll:
+     its size goes from full to compact over exactly the distance it travels before it locks in under the status
+     bar, so it arrives small at the moment it sticks. A paper backdrop fades in behind it at the end.
+     Tap the top bar to go back to the top; section heads pin just below it. */
   (function(){
-    var big=document.querySelector(".nameplate");if(!big)return;
+    var big=document.querySelector(".nameplate"),dl=document.querySelector(".dateline");if(!big||!dl)return;
     var strip=el("div","statusbar");document.body.appendChild(strip);
-    var bar=el("div","minibar"),b=el("button",null,big.textContent);b.type="button";b.setAttribute("aria-label","Back to top");
-    bar.appendChild(b);bar.setAttribute("aria-hidden","true");b.tabIndex=-1;document.body.appendChild(bar);
+    var bar=el("div","minibar"),b=el("button");b.type="button";b.setAttribute("aria-label","Back to top");b.tabIndex=-1;
+    bar.appendChild(b);document.body.appendChild(bar);
     b.addEventListener("click",function(){window.scrollTo({top:0,behavior:REDUCE?"auto":"smooth"});});
-    var lastP=-1,pinned=null,ticking=false;
+    var BAR=48,SMALL=30,m=null,pinned=null,ticking=false;
+    function measure(){
+      var cs=getComputedStyle(big),fs=parseFloat(cs.fontSize)||60,h=big.offsetHeight,safe=strip.offsetHeight;
+      var top=safe+BAR/2-h/2;                                   // sticky top that centres the shrunk name in the bar
+      document.documentElement.style.setProperty("--np-top",top+"px");
+      var rest=dl.getBoundingClientRect().bottom+window.scrollY+(parseFloat(cs.marginTop)||0);
+      m={s:Math.min(1,SMALL/fs),dist:Math.max(1,rest-top),safe:safe};
+    }
     function update(){
-      ticking=false;
-      var H=bar.offsetHeight,safe=strip.offsetHeight;
-      // Driven by scroll distance, not by where the nameplate is: hidden at the very top, fully in place within
-      // the first ~30px of scrolling, long before the big nameplate can reach the Dynamic Island, the status bar
-      // or a browser's address bar (which may cover the page without the page being told).
-      var p=Math.max(0,Math.min(1,(window.scrollY-2)/28));
-      if(REDUCE)p=p>0.5?1:0;
-      if(Math.abs(p-lastP)>0.001){
-        lastP=p;
-        var e=p*p*(3-2*p);   // smoothstep, so it eases in and settles
-        bar.style.transform="translateY("+((e-1)*100).toFixed(2)+"%)";
-        b.style.opacity=(0.25+0.75*e).toFixed(3);
-        big.style.opacity=(1-e).toFixed(3);   // the big one fades as the small one arrives, so it reads as one name moving
-        bar.classList.toggle("full",p>=1);
-        var on=p>0.5;bar.classList.toggle("on",on);bar.setAttribute("aria-hidden",on?"false":"true");b.tabIndex=on?0:-1;
-      }
+      ticking=false;if(!m)measure();
+      var p=Math.max(0,Math.min(1,window.scrollY/m.dist));
+      big.style.transform=p>0?"scale("+(1+(m.s-1)*p).toFixed(4)+")":"";
+      bar.style.opacity=Math.max(0,Math.min(1,(p-0.55)/0.45)).toFixed(3);
       var pin=p>=1;
-      if(pin!==pinned){pinned=pin;document.documentElement.style.setProperty("--bar",pin?(H-safe)+"px":"0px");}
+      if(pin!==pinned){pinned=pin;bar.classList.toggle("full",pin);b.tabIndex=pin?0:-1;
+        document.documentElement.style.setProperty("--bar",pin?BAR+"px":"0px");}
     }
     function req(){if(!ticking){ticking=true;requestAnimationFrame(update);}}
-    window.addEventListener("scroll",req,{passive:true});window.addEventListener("resize",req);
+    window.addEventListener("scroll",req,{passive:true});
+    window.addEventListener("resize",function(){m=null;req();});
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){m=null;req();});
     update();
   })();
 
