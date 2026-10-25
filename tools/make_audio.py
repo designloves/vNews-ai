@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Turn each edition's spoken brief into an MP3 with Piper (a local, open-source neural voice).
+"""Turn each edition's spoken brief into an MP3 with Kokoro (an open-source neural voice, Apache 2.0).
 
 Runs in GitHub Actions (see .github/workflows/audio.yml). For every editions/YYYY-MM-DD.json that has a
 "brief", it writes editions/YYYY-MM-DD.mp3 and records it in editions/audio.json, which the page reads to
@@ -7,8 +7,26 @@ know which editions have audio. An edition is only re-recorded when its spoken t
 """
 import datetime, glob, hashlib, json, os, re, subprocess, sys, tempfile
 
-VOICE = os.environ.get("PIPER_VOICE", "voices/en_GB-cori-high.onnx")
+VOICE = os.environ.get("KOKORO_VOICE", "bf_emma")   # British: bf_emma, bf_isabella, bm_george, bm_fable
+SPEED = float(os.environ.get("KOKORO_SPEED", "1.0"))
 MANIFEST = "editions/audio.json"
+RATE = 24000
+_pipes = {}
+
+
+def synth(text, wav):
+    import numpy as np, soundfile as sf
+    from kokoro import KPipeline
+    lang = VOICE[0]  # 'b' British English, 'a' American English
+    pipe = _pipes.get(lang) or _pipes.setdefault(lang, KPipeline(lang_code=lang, repo_id="hexgrad/Kokoro-82M"))
+    # One sentence per chunk, with a short breath between sentences.
+    sentences = [s for s in re.split(r"(?<=[.!?])\s+", text) if s.strip()]
+    gap = np.zeros(int(RATE * 0.16), dtype=np.float32)
+    parts = []
+    for _, _, audio in pipe("\n".join(sentences), voice=VOICE, speed=SPEED, split_pattern=r"\n+"):
+        a = audio.numpy() if hasattr(audio, "numpy") else np.asarray(audio)
+        parts += [a.astype(np.float32), gap]
+    sf.write(wav, np.concatenate(parts), RATE)
 
 
 def spoken_text(date, edition):
@@ -40,19 +58,20 @@ def main():
             print(f"{date}: no brief, skipped")
             continue
         text = spoken_text(date, edition)
-        sha = hashlib.sha1((os.path.basename(VOICE) + "\n" + text).encode()).hexdigest()[:12]
+        sha = hashlib.sha1(f"kokoro:{VOICE}:{SPEED}\n{text}".encode()).hexdigest()[:12]
         mp3 = f"editions/{date}.mp3"
         if manifest.get(date, {}).get("sha") == sha and os.path.exists(mp3):
             continue
         print(f"{date}: recording {len(text.split())} words")
         with tempfile.TemporaryDirectory() as tmp:
             wav = os.path.join(tmp, "brief.wav")
-            subprocess.run([sys.executable, "-m", "piper", "--model", VOICE, "--output_file", wav,
-                            "--sentence_silence", "0.35"], input=text.encode(), check=True)
-            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", wav, "-ac", "1", "-codec:a", "libmp3lame",
+            synth(text, wav)
+            # Loudness-levelled to podcast standard so every day plays at the same volume.
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", wav, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
+                            "-ac", "1", "-ar", "24000", "-codec:a", "libmp3lame",
                             "-b:a", "64k", "-metadata", f"title=Vertical News, {date}", "-metadata", "artist=Vertical News",
                             mp3], check=True)
-        manifest[date] = {"file": f"{date}.mp3", "sha": sha, "duration": duration(mp3)}
+        manifest[date] = {"file": f"{date}.mp3", "sha": sha, "duration": duration(mp3), "voice": VOICE}
         changed = True
     if changed:
         with open(MANIFEST, "w") as f:

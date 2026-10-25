@@ -1,6 +1,7 @@
 name: Record the spoken brief
 
-# Whenever an edition is added or changed, record its brief as an MP3 with Piper and commit it.
+# Whenever an edition is added or changed, record its brief as an MP3 with Kokoro and commit it.
+# To change the voice, edit KOKORO_VOICE below (bf_emma, bf_isabella, bm_george, bm_fable); every edition is re-recorded.
 on:
   push:
     branches: [main]
@@ -27,25 +28,21 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Piper and ffmpeg
+      - name: Install Kokoro (CPU) and ffmpeg
         run: |
-          pip install --quiet piper-tts==1.2.0
-          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg espeak-ng
+          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet "kokoro>=0.9.4" soundfile numpy
 
-      - name: Cache the voice
+      - name: Cache the voice model
         uses: actions/cache@v4
         with:
-          path: voices
-          key: piper-en_GB-cori-high-v1
-
-      - name: Download the voice
-        run: |
-          mkdir -p voices && cd voices
-          base=https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_GB/cori/high
-          [ -f en_GB-cori-high.onnx ] || curl -sSfLO "$base/en_GB-cori-high.onnx"
-          [ -f en_GB-cori-high.onnx.json ] || curl -sSfLO "$base/en_GB-cori-high.onnx.json"
+          path: ~/.cache/huggingface
+          key: kokoro-82m-v1
 
       - name: Record editions that need it
+        env:
+          KOKORO_VOICE: bf_emma
         run: python tools/make_audio.py
 
       - name: Commit the audio
