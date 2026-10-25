@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>vNews-ai</title>
+<title>Vertical News</title>
 <meta name="description" content="A daily brief of AI, bearing and automotive news for people who build digital products and vehicles.">
-<meta property="og:title" content="vNews-ai">
+<meta property="og:title" content="Vertical News">
 <meta property="og:description" content="A daily brief of AI, bearing and automotive news.">
 <meta name="theme-color" content="#eeeadf" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1f1e1b" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="apple-mobile-web-app-title" content="vNews">
+<meta name="apple-mobile-web-app-title" content="Vertical News">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&family=Archivo+Narrow:wght@500;600&family=UnifrakturMaguntia&display=swap">
@@ -46,7 +46,7 @@ button{font:inherit;color:inherit}
 .nav:hover:not(:disabled){background:var(--paper-2);color:var(--ink)}
 .nav:disabled{opacity:.35;cursor:default}
 .mast{text-align:center;padding-block:14px 10px;border-bottom:3px double var(--rule)}
-.nameplate{margin:0;font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-weight:400;font-size:clamp(48px,13vw,76px);line-height:1}
+.nameplate{margin:0;font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-weight:400;font-size:clamp(38px,10.5vw,72px);line-height:1}
 .mast .sub{margin-top:8px}
 
 /* Edition */
@@ -98,17 +98,17 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
 <div class="paper">
   <div class="dateline">
     <button class="nav" id="older" type="button" aria-label="Older edition" disabled>‹ Older</button>
-    <div class="when" id="when" aria-live="polite">vNews-ai</div>
+    <div class="when" id="when" aria-live="polite">Vertical News</div>
     <button class="nav" id="newer" type="button" aria-label="Newer edition" disabled>Newer ›</button>
   </div>
   <header class="mast">
-    <h1 class="nameplate">vNews</h1>
+    <h1 class="nameplate">Vertical News</h1>
     <div class="sub label" id="sub">AI, bearing and automotive news, every morning</div>
   </header>
   <main id="edition">
     <div class="empty"><div class="label">Fetching editions</div></div>
   </main>
-  <footer class="label">vNews-ai · A new edition every morning</footer>
+  <footer class="label">Vertical News · A new edition every morning</footer>
 </div>
 
 <script>

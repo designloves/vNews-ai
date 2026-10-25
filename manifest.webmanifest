@@ -1,6 +1,6 @@
 {
-  "name": "vNews-ai",
-  "short_name": "vNews",
+  "name": "Vertical News",
+  "short_name": "Vertical News",
   "description": "A daily brief of AI, bearing and automotive news.",
   "start_url": "./",
   "scope": "./",

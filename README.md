@@ -1,1 +1,1 @@
-# vNews-ai
+# Vertical News
