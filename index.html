@@ -51,7 +51,7 @@ button{font:inherit;color:inherit}
 
 /* Edition */
 #edition{touch-action:pan-y;min-height:50vh}
-.edition{display:flex;flex-direction:column;gap:26px;padding-top:20px}
+.edition{display:flex;flex-direction:column;gap:44px;padding-top:22px}
 /* Page turn: a snapshot of the visible page is cut into vertical strips chained in 3D, so the sheet curls as it
    turns around the screen edge; the real, already-updated page waits underneath. */
 .flip-stage{position:fixed;inset:0;z-index:50;pointer-events:none;overflow:hidden}
@@ -103,7 +103,7 @@ details[open] .more .o, details:not([open]) .more .c{display:none}
 .body p{margin:0;max-width:65ch;text-wrap:pretty}
 .body p:first-child::first-letter{font-weight:600}
 .links{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--f-label);font-size:14px}
-.watch{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px}
+.watch{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:14px}
 .watch li{max-width:65ch}
 .allsrc summary{cursor:pointer;list-style:none}
 .allsrc summary::-webkit-details-marker{display:none}
@@ -122,10 +122,19 @@ details[open] .more .o, details:not([open]) .more .c{display:none}
 .ltime{margin-left:2px}
 .story.reading{background:var(--paper-2);margin-inline:-10px;padding-inline:10px;border-radius:6px}
 .story.reading .hl::before{content:"♪ ";font-weight:400;color:var(--ink-2)}
-.more-btn{display:block;width:100%;margin-top:4px;padding:12px;border:1px solid var(--rule);border-radius:999px;background:none;cursor:pointer;
-  font-family:var(--f-label);font-weight:600;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink)}
-.more-btn:hover{background:var(--paper-2)}
-.allnews .stories{margin-top:10px}
+/* Newspaper section heads: heavy rule, section name on the left, an optional control on the right */
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 6px;padding-top:10px;
+  border-top:3px solid var(--ink);border-bottom:1px solid var(--rule);padding-bottom:10px}
+.sec-title{margin:0;font-family:var(--f-label);font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.sec-meta{font-family:var(--f-label);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.sec-head.toggle{cursor:pointer}
+.sec-btn{background:none;border:0;padding:4px 0 4px 12px;margin:-4px 0;cursor:pointer;font-family:var(--f-label);font-weight:600;font-size:13px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.sec-head .left{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec-body{display:flex;flex-direction:column;gap:36px}
+.sub-head{margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--rule);font-family:var(--f-label);font-weight:600;font-size:13px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+.allsrc summary{padding-block:4px}
 footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-align:center}
 </style>
 </head>
@@ -200,26 +209,42 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     // The written summary is not shown; it is what the Listen button reads (see script()).
     var tops=stories.filter(function(s){return s.top;}),rest=stories.filter(function(s){return !s.top;});
     if(!tops.length){tops=rest.slice(0,1);rest=rest.slice(1);}   // an edition with no top story still leads with one
+    function secHead(title,meta){
+      var h=el("div","sec-head"),l=el("div","left");l.appendChild(el("h2","sec-title",title));
+      if(meta)l.appendChild(el("span","sec-meta",meta));h.appendChild(l);return h;
+    }
     if(tops.length){
-      var ts=el("section");ts.appendChild(el("h2","h2 label","Top stories"));
+      var ts=el("section");ts.appendChild(secHead("Top stories"));
       var tol=el("ol","stories");tops.forEach(function(s){tol.appendChild(storyEl(s,true));});
       ts.appendChild(tol);wrap.appendChild(ts);
     }
-    if(rest.length){
-      var as=el("section","allnews");
-      var tog=el("button","more-btn");tog.type="button";tog.setAttribute("aria-expanded","false");
-      var lab=function(open){tog.textContent=(open?"Hide all news ▴":"All news ("+rest.length+") ▾");};lab(false);
-      var aol=el("ol","stories");aol.hidden=true;rest.forEach(function(s){aol.appendChild(storyEl(s,false));});
-      tog.addEventListener("click",function(){var open=aol.hidden;aol.hidden=!open;tog.setAttribute("aria-expanded",String(open));lab(open);});
-      as.appendChild(tog);as.appendChild(aol);wrap.appendChild(as);
-    }
+    // All news: the remaining stories plus Worth watching, folded away behind the section head.
     var w=arr(x.watch).filter(Boolean);
-    if(w.length){var ws=el("section");ws.appendChild(el("h2","h2 label","Worth watching"));var ul=el("ul","watch");
-      w.forEach(function(it){var li=el("li");if(str(it.title)){li.appendChild(el("strong",null,it.title+"."));li.appendChild(document.createTextNode(" "));}
-        li.appendChild(document.createTextNode(str(it.text)+" "));var a=link(it.link);if(a)li.appendChild(a);ul.appendChild(li);});
-      ws.appendChild(ul);wrap.appendChild(ws);}
+    if(rest.length||w.length){
+      var as=el("section","allnews");
+      var meta=rest.length?rest.length+(rest.length===1?" story":" stories"):"";
+      var hd=secHead("All news",meta);hd.classList.add("toggle");
+      var tog=el("button","sec-btn","Show ▾");tog.type="button";tog.setAttribute("aria-expanded","false");
+      hd.appendChild(tog);as.appendChild(hd);
+      var body=el("div","sec-body");body.hidden=true;
+      if(rest.length){var aol=el("ol","stories");rest.forEach(function(s){aol.appendChild(storyEl(s,false));});body.appendChild(aol);}
+      if(w.length){var ws=el("div");ws.appendChild(el("h3","sub-head","Worth watching"));var ul=el("ul","watch");
+        w.forEach(function(it){var li=el("li");if(str(it.title)){li.appendChild(el("strong",null,it.title+"."));li.appendChild(document.createTextNode(" "));}
+          li.appendChild(document.createTextNode(str(it.text)+" "));var a=link(it.link);if(a)li.appendChild(a);ul.appendChild(li);});
+        ws.appendChild(ul);body.appendChild(ws);}
+      as.appendChild(body);wrap.appendChild(as);
+      var flip=function(e){if(e&&e.target.closest&&e.target.closest("a"))return;var open=body.hidden;body.hidden=!open;
+        tog.setAttribute("aria-expanded",String(open));tog.textContent=open?"Hide ▴":"Show ▾";};
+      hd.addEventListener("click",flip);
+    }
     var src=arr(x.sources).map(link).filter(Boolean);
-    if(src.length){var sd=el("details","allsrc");sd.appendChild(el("summary","h2 label","All sources ("+src.length+") ▾"));var so=el("ol");src.forEach(function(a){var li=el("li");li.appendChild(a);so.appendChild(li);});sd.appendChild(so);wrap.appendChild(sd);}
+    if(src.length){
+      var sd=el("section","allsrc"),sh=secHead("Sources",src.length+(src.length===1?" link":" links"));sh.classList.add("toggle");
+      var sb=el("button","sec-btn","Show ▾");sb.type="button";sb.setAttribute("aria-expanded","false");sh.appendChild(sb);
+      var so=el("ol");so.hidden=true;src.forEach(function(a){var li=el("li");li.appendChild(a);so.appendChild(li);});
+      sh.addEventListener("click",function(){var open=so.hidden;so.hidden=!open;sb.setAttribute("aria-expanded",String(open));sb.textContent=open?"Hide ▴":"Show ▾";});
+      sd.appendChild(sh);sd.appendChild(so);wrap.appendChild(sd);
+    }
     if(str(x.note))wrap.appendChild(el("p","note",x.note));
     if(dates.length>1){
       var o=at>0, n=at<dates.length-1;
