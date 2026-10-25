@@ -1,0 +1,59 @@
+name: Record the spoken brief
+
+# Whenever an edition is added or changed, record its brief as an MP3 with Piper and commit it.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "editions/*.json"
+      - "tools/make_audio.py"
+      - ".github/workflows/audio.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audio
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Piper and ffmpeg
+        run: |
+          pip install --quiet piper-tts==1.2.0
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Cache the voice
+        uses: actions/cache@v4
+        with:
+          path: voices
+          key: piper-en_GB-cori-high-v1
+
+      - name: Download the voice
+        run: |
+          mkdir -p voices && cd voices
+          base=https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_GB/cori/high
+          [ -f en_GB-cori-high.onnx ] || curl -sSfLO "$base/en_GB-cori-high.onnx"
+          [ -f en_GB-cori-high.onnx.json ] || curl -sSfLO "$base/en_GB-cori-high.onnx.json"
+
+      - name: Record editions that need it
+        run: python tools/make_audio.py
+
+      - name: Commit the audio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add editions/*.mp3 editions/audio.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi
+          git commit -m "Audio for new editions"
+          for i in 1 2 3; do git pull --rebase --quiet origin main && git push && exit 0; sleep 5; done
+          exit 1
