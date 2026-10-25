@@ -333,7 +333,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   function speakFrom(i,off){
     var t=++P.token;synth.cancel();
     if(i>=P.items.length){finish();return;}
-    P.i=Math.max(0,i);off=Math.max(0,off||0);P.off=off;P.said=0;P.t0=performance.now();P.bound=false;
+    P.mode="speech";P.i=Math.max(0,i);off=Math.max(0,off||0);P.off=off;P.said=0;P.t0=performance.now();P.bound=false;
     P.state="playing";updateUI();
     var text=words(P.i).slice(off).join(" ");
     var u=new SpeechSynthesisUtterance(text);
@@ -359,7 +359,44 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     finish();
   }
   function finish(){P.token++;P.state="idle";P.i=0;updateUI();}
-  function stopReading(){if(!canSpeak)return;P.token++;synth.cancel();finish();}
+  function stopReading(){
+    if(P.mode==="audio"){stopAudio();P.mode=null;return;}
+    if(!canSpeak)return;P.token++;synth.cancel();finish();
+  }
+
+  /* ---------- Recorded audio ----------
+     When an edition has a recorded MP3 (made by the GitHub workflow, listed in editions/audio.json) the button
+     plays that instead of the device voice. It is real media, so iOS shows it on the lock screen, in Control
+     Centre and the Dynamic Island, keeps playing with the screen off, and AirPods/CarPlay controls work. */
+  var AUDIO={},aud=null,MS=("mediaSession" in navigator)?navigator.mediaSession:null;
+  function hasAudio(){return !!(window.Audio&&dates[idx]&&AUDIO[dates[idx]]);}
+  function msState(st){if(MS)try{MS.playbackState=st;}catch(_){}}
+  function msPos(){if(MS&&MS.setPositionState&&aud&&isFinite(aud.duration)&&aud.duration>0)
+    try{MS.setPositionState({duration:aud.duration,playbackRate:aud.playbackRate||1,position:Math.min(aud.currentTime,aud.duration)});}catch(_){}}
+  function ensureAudio(){
+    if(aud)return aud;
+    aud=new Audio();aud.preload="none";
+    aud.addEventListener("play",function(){P.mode="audio";P.state="playing";updateUI();msState("playing");});
+    aud.addEventListener("pause",function(){if(P.mode!=="audio")return;P.state="idle";updateUI();msState("paused");});
+    aud.addEventListener("ended",function(){P.state="idle";try{aud.currentTime=0;}catch(_){}updateUI();msState("none");});
+    aud.addEventListener("timeupdate",msPos);aud.addEventListener("loadedmetadata",msPos);
+    if(MS){
+      var h={play:function(){aud.play().catch(function(){});},pause:function(){aud.pause();},stop:function(){stopAudio();},
+        seekbackward:function(d){skipAudio(-((d&&d.seekOffset)||5));},seekforward:function(d){skipAudio((d&&d.seekOffset)||5);},
+        seekto:function(d){if(d&&typeof d.seekTime==="number"){aud.currentTime=d.seekTime;msPos();}}};
+      Object.keys(h).forEach(function(k){try{MS.setActionHandler(k,h[k]);}catch(_){}});
+    }
+    return aud;
+  }
+  function playAudio(){
+    var d=dates[idx],a=AUDIO[d];if(!a)return;ensureAudio();
+    if(aud.getAttribute("data-d")!==d){aud.src="editions/"+a.file+"?v="+encodeURIComponent(a.sha||"");aud.setAttribute("data-d",d);}
+    if(MS&&window.MediaMetadata)try{MS.metadata=new MediaMetadata({title:"Vertical News, "+longDate(d),artist:"Vertical News",album:"Morning brief",
+      artwork:[{src:"icons/icon-512.png?v=3",sizes:"512x512",type:"image/png"},{src:"icons/icon-192.png?v=3",sizes:"192x192",type:"image/png"}]});}catch(_){}
+    P.mode="audio";aud.play().catch(function(){P.state="idle";updateUI();});
+  }
+  function stopAudio(){if(!aud)return;aud.pause();try{aud.currentTime=0;}catch(_){}P.state="idle";updateUI();msState("none");}
+  function skipAudio(sec){if(!aud)return;var end=isFinite(aud.duration)?aud.duration-0.2:1e9;aud.currentTime=Math.max(0,Math.min(end,aud.currentTime+sec));msPos();}
   function releasePlayer(){stopReading();P.items=[];}
   window.addEventListener("pagehide",function(){if(canSpeak)synth.cancel();});
 
@@ -380,9 +417,13 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     st.sort(function(a,b){return (b.top?1:0)-(a.top?1:0);});
     return script(dates[idx],x,st);
   }
-  function refreshFab(){if(!fab)return;var it=currentItems();fab.mins=it.length?minutes(it):0;fab.wrap.hidden=!it.length;if(fab.place)fab.place();updateUI();}
+  function refreshFab(){
+    if(!fab)return;var it=currentItems(),a=AUDIO[dates[idx]];
+    fab.mins=a&&a.duration?Math.max(1,Math.round(a.duration/60)):(it.length?minutes(it):0);
+    fab.wrap.hidden=!(hasAudio()||(canSpeak&&it.length));if(fab.place)fab.place();updateUI();
+  }
   (function(){
-    if(!canSpeak)return;
+    if(!canSpeak&&!window.Audio)return;
     var wrap=el("div","fab-wrap"),back=el("button","fab-mini"),fwd=el("button","fab-mini"),main=el("button","fab");
     back.type=fwd.type=main.type="button";back.classList.add("is-back");fwd.classList.add("is-fwd");back.innerHTML=ICON.back;fwd.innerHTML=ICON.fwd;
     back.setAttribute("aria-label","Back 5 seconds");fwd.setAttribute("aria-label","Forward 5 seconds");
@@ -394,13 +435,14 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     document.body.appendChild(wrap);place();
     fab={wrap:wrap,main:main,back:back,fwd:fwd,mins:0,place:place};
     function spin(b){b.classList.remove("spin");void b.offsetWidth;b.classList.add("spin");}
-    back.addEventListener("click",function(){if(P.state!=="playing")return;spin(back);seekWords(-Math.round(5*WPS));});
-    fwd.addEventListener("click",function(){if(P.state!=="playing")return;spin(fwd);seekWords(Math.round(5*WPS));});
+    back.addEventListener("click",function(){if(P.state!=="playing")return;spin(back);if(P.mode==="audio")skipAudio(-5);else seekWords(-Math.round(5*WPS));});
+    fwd.addEventListener("click",function(){if(P.state!=="playing")return;spin(fwd);if(P.mode==="audio")skipAudio(5);else seekWords(Math.round(5*WPS));});
     var dragged=false;
     main.addEventListener("click",function(){
       if(dragged){dragged=false;return;}
       if(P.state==="playing"){stopReading();return;}
-      P.items=currentItems();P.i=0;if(P.items.length)speakFrom(0,0);
+      if(hasAudio()){playAudio();return;}
+      if(!canSpeak)return;P.items=currentItems();P.i=0;if(P.items.length)speakFrom(0,0);
     });
     // Press and hold (about a third of a second), then drag along the bottom edge; it snaps to the nearer side.
     var hold=0,drag=null;
@@ -700,6 +742,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   document.addEventListener("touchend",function(){endGesture(false);},{passive:true});
   document.addEventListener("touchcancel",function(){endGesture(true);},{passive:true});
 
+  getJSON("editions/audio.json").then(function(a){AUDIO=(a&&typeof a==="object")?a:{};refreshFab();}).catch(function(){});
   getJSON("editions/index.json").then(function(ix){
     var seen={};
     dates=arr(ix&&ix.editions).filter(function(d){if(typeof d!=="string"||!DATE_RE.test(d)||seen[d])return false;seen[d]=1;return true;}).sort();
