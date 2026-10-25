@@ -116,18 +116,27 @@ details[open] .more .o, details:not([open]) .more .c{display:none}
 /* Read-aloud bar */
 /* Floating Listen button */
 .fab-wrap{position:fixed;z-index:40;left:16px;bottom:calc(20px + env(safe-area-inset-bottom,0px));
-  display:flex;flex-direction:column;align-items:center;gap:12px;width:66px}
+  display:flex;flex-direction:column;align-items:center;gap:12px;width:112px}
 .fab{width:66px;height:66px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);display:grid;place-items:center;cursor:pointer;
   box-shadow:0 8px 22px rgba(0,0,0,.3),0 1px 3px rgba(0,0,0,.2);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
   transition:transform .18s ease,box-shadow .18s ease}
-.fab:active{transform:scale(.95)}
+.fab{-webkit-tap-highlight-color:transparent}
+.fab:active{transform:scale(.92)}
 .fab-wrap.dragging .fab{transform:scale(1.12);box-shadow:0 14px 34px rgba(0,0,0,.35)}
-.fab-mini{display:none;width:50px;height:50px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink);
-  place-items:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.18);animation:fabIn .2s ease-out;padding:0}
+.fab-mini{display:grid;width:50px;height:50px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink);
+  place-items:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.18);padding:0;-webkit-tap-highlight-color:transparent;
+  transition:transform .12s ease,background .12s ease,box-shadow .12s ease}
+.fab-mini:active:not(:disabled){transform:scale(.88);background:var(--paper-2);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.fab-mini .arr{transform-box:view-box;transform-origin:16px 17px}
+.fab-mini.is-back.spin .arr{animation:spinBack .5s cubic-bezier(.3,.7,.3,1)}
+.fab-mini.is-fwd.spin .arr{animation:spinFwd .5s cubic-bezier(.3,.7,.3,1)}
+@keyframes spinBack{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
+@keyframes spinFwd{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.fab-row{display:none;gap:12px;animation:fabIn .2s ease-out}
 .fab-mini:disabled{opacity:.4;cursor:default}
-.fab-wrap.playing .fab-mini{display:grid}
+.fab-wrap.playing .fab-row{display:flex}
 @keyframes fabIn{from{transform:translateY(12px) scale(.6);opacity:0}}
-@media (prefers-reduced-motion: reduce){.fab-mini{animation:none}.fab{transition:none}}
+@media (prefers-reduced-motion: reduce){.fab-row,.fab-mini .arr{animation:none!important}.fab{transition:none}}
 /* Section heads stay pinned while you read through their section */
 .sec-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper)}
 .sec-head::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:env(safe-area-inset-top,0px);background:var(--paper)}
@@ -354,8 +363,8 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     play:'<svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path d="M8 4.8v14.4c0 .8.9 1.3 1.6.9l11.3-7.2c.6-.4.6-1.3 0-1.7L9.6 3.9C8.9 3.5 8 4 8 4.8z" fill="currentColor"/></svg>',
     stop:'<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2.5" fill="currentColor"/></svg>',
     // Circular arrow with the number of seconds inside, as on podcast players.
-    back:'<svg viewBox="0 0 32 32" width="36" height="36" aria-hidden="true"><path d="M9.2 8.6A11 11 0 1 1 5.2 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M4.6 4.8v6.6h6.6z" fill="currentColor" transform="rotate(-12 8 8)"/><text x="16.6" y="22.6" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-weight="700" font-size="13.5" fill="currentColor">5</text></svg>',
-    fwd:'<svg viewBox="0 0 32 32" width="36" height="36" aria-hidden="true"><path d="M22.8 8.6A11 11 0 1 0 26.8 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M27.4 4.8v6.6h-6.6z" fill="currentColor" transform="rotate(12 24 8)"/><text x="15.4" y="22.6" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-weight="700" font-size="13.5" fill="currentColor">5</text></svg>'
+    back:'<svg viewBox="0 0 32 32" width="36" height="36" aria-hidden="true"><g class="arr"><path d="M9.2 8.6A11 11 0 1 1 5.2 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M4.6 4.8v6.6h6.6z" fill="currentColor" transform="rotate(-12 8 8)"/></g><text x="16.6" y="22.6" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-weight="700" font-size="13.5" fill="currentColor">5</text></svg>',
+    fwd:'<svg viewBox="0 0 32 32" width="36" height="36" aria-hidden="true"><g class="arr"><path d="M22.8 8.6A11 11 0 1 0 26.8 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M27.4 4.8v6.6h-6.6z" fill="currentColor" transform="rotate(12 24 8)"/></g><text x="15.4" y="22.6" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-weight="700" font-size="13.5" fill="currentColor">5</text></svg>'
   };
   var fab=null;
   function currentItems(){
@@ -368,17 +377,18 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   (function(){
     if(!canSpeak)return;
     var wrap=el("div","fab-wrap"),back=el("button","fab-mini"),fwd=el("button","fab-mini"),main=el("button","fab");
-    back.type=fwd.type=main.type="button";back.innerHTML=ICON.back;fwd.innerHTML=ICON.fwd;
+    back.type=fwd.type=main.type="button";back.classList.add("is-back");fwd.classList.add("is-fwd");back.innerHTML=ICON.back;fwd.innerHTML=ICON.fwd;
     back.setAttribute("aria-label","Back 5 seconds");fwd.setAttribute("aria-label","Forward 5 seconds");
-    wrap.appendChild(fwd);wrap.appendChild(back);wrap.appendChild(main);wrap.hidden=true;
+    var row=el("div","fab-row");row.appendChild(back);row.appendChild(fwd);wrap.appendChild(row);wrap.appendChild(main);wrap.hidden=true;
     // Horizontal position along the bottom edge, 0 = far left, 1 = far right; kept between visits.
     var pos=1;try{var sv=parseFloat(localStorage.getItem("vn-fab-x"));if(sv>=0&&sv<=1)pos=sv;}catch(_){}
     function place(){var m=16,w=wrap.offsetWidth||64,room=Math.max(0,window.innerWidth-2*m-w);wrap.style.left=(m+room*pos)+"px";}
     window.addEventListener("resize",place);
     document.body.appendChild(wrap);place();
     fab={wrap:wrap,main:main,back:back,fwd:fwd,mins:0,place:place};
-    back.addEventListener("click",function(){seekWords(-Math.round(5*WPS));});
-    fwd.addEventListener("click",function(){seekWords(Math.round(5*WPS));});
+    function spin(b){b.classList.remove("spin");void b.offsetWidth;b.classList.add("spin");}
+    back.addEventListener("click",function(){if(P.state!=="playing")return;spin(back);seekWords(-Math.round(5*WPS));});
+    fwd.addEventListener("click",function(){if(P.state!=="playing")return;spin(fwd);seekWords(Math.round(5*WPS));});
     var dragged=false;
     main.addEventListener("click",function(){
       if(dragged){dragged=false;return;}
