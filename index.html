@@ -629,15 +629,18 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     var lastP=-1,pinned=null,ticking=false;
     function update(){
       ticking=false;
-      var H=bar.offsetHeight,safe=strip.offsetHeight,r=big.getBoundingClientRect();
-      // Fully in place by the moment the big nameplate's top reaches the status bar; starts 60px before that.
-      var p=Math.max(0,Math.min(1,(safe+60-r.top)/60));
+      var H=bar.offsetHeight,safe=strip.offsetHeight;
+      // Driven by scroll distance, not by where the nameplate is: hidden at the very top, fully in place within
+      // the first ~30px of scrolling, long before the big nameplate can reach the Dynamic Island, the status bar
+      // or a browser's address bar (which may cover the page without the page being told).
+      var p=Math.max(0,Math.min(1,(window.scrollY-2)/28));
       if(REDUCE)p=p>0.5?1:0;
       if(Math.abs(p-lastP)>0.001){
         lastP=p;
         var e=p*p*(3-2*p);   // smoothstep, so it eases in and settles
         bar.style.transform="translateY("+((e-1)*100).toFixed(2)+"%)";
         b.style.opacity=(0.25+0.75*e).toFixed(3);
+        big.style.opacity=(1-e).toFixed(3);   // the big one fades as the small one arrives, so it reads as one name moving
         bar.classList.toggle("full",p>=1);
         var on=p>0.5;bar.classList.toggle("on",on);bar.setAttribute("aria-hidden",on?"false":"true");b.tabIndex=on?0:-1;
       }
