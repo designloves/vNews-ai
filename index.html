@@ -49,11 +49,13 @@ button{font:inherit;color:inherit}
 /* Compact nameplate that stays pinned once the masthead has scrolled away */
 :root{--bar:0px}
 .minibar{position:fixed;left:0;right:0;top:0;z-index:30;background:var(--paper);padding-top:env(safe-area-inset-top,0px);text-align:center;
-  transform:translateY(-100%);transition:transform .22s ease,box-shadow .22s ease;pointer-events:none}
-.minibar.on{transform:none;pointer-events:auto;box-shadow:0 8px 16px -12px rgba(0,0,0,.45)}
+  transform:translateY(-100%);pointer-events:none;will-change:transform}
+.minibar.on{pointer-events:auto}
+.minibar.full{box-shadow:0 8px 16px -12px rgba(0,0,0,.45)}
 .minibar button{display:block;width:100%;background:none;border:0;padding:8px 16px 9px;cursor:pointer;color:var(--ink);
-  font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-size:34px;line-height:1}
-@media (prefers-reduced-motion: reduce){.minibar{transition:none}}
+  font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-size:34px;line-height:1;transition:opacity .15s linear}
+/* Solid paper behind the status bar / Dynamic Island, so nothing scrolls visibly underneath it */
+.statusbar{position:fixed;left:0;right:0;top:0;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:31;pointer-events:none}
 .nameplate{margin:0;font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-weight:400;font-size:clamp(38px,10.5vw,72px);line-height:1}
 .mast .sub{margin-top:8px}
 
@@ -615,19 +617,36 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
 
 
   /* ---------- Pinned nameplate ----------
-     When the big nameplate scrolls out of view, a compact one slides in at the top (tap it to go back up);
-     section heads then pin just below it. */
+     The compact nameplate slides down in step with scrolling: it starts moving as the big nameplate nears the
+     top and is fully in place by the time the big one reaches the status bar, so there is no pop and nothing
+     disappears behind the Dynamic Island. Tap it to go back to the top; section heads pin just below it. */
   (function(){
-    var big=document.querySelector(".nameplate");if(!big||!("IntersectionObserver" in window))return;
+    var big=document.querySelector(".nameplate");if(!big)return;
+    var strip=el("div","statusbar");document.body.appendChild(strip);
     var bar=el("div","minibar"),b=el("button",null,big.textContent);b.type="button";b.setAttribute("aria-label","Back to top");
-    bar.appendChild(b);bar.setAttribute("aria-hidden","true");document.body.appendChild(bar);
+    bar.appendChild(b);bar.setAttribute("aria-hidden","true");b.tabIndex=-1;document.body.appendChild(bar);
     b.addEventListener("click",function(){window.scrollTo({top:0,behavior:REDUCE?"auto":"smooth"});});
-    function set(on){
-      bar.classList.toggle("on",on);bar.setAttribute("aria-hidden",on?"false":"true");b.tabIndex=on?0:-1;
-      document.documentElement.style.setProperty("--bar",on?b.offsetHeight+"px":"0px");
+    var lastP=-1,pinned=null,ticking=false;
+    function update(){
+      ticking=false;
+      var H=bar.offsetHeight,safe=strip.offsetHeight,r=big.getBoundingClientRect();
+      // Fully in place by the moment the big nameplate's top reaches the status bar; starts 60px before that.
+      var p=Math.max(0,Math.min(1,(safe+60-r.top)/60));
+      if(REDUCE)p=p>0.5?1:0;
+      if(Math.abs(p-lastP)>0.001){
+        lastP=p;
+        var e=p*p*(3-2*p);   // smoothstep, so it eases in and settles
+        bar.style.transform="translateY("+((e-1)*100).toFixed(2)+"%)";
+        b.style.opacity=(0.25+0.75*e).toFixed(3);
+        bar.classList.toggle("full",p>=1);
+        var on=p>0.5;bar.classList.toggle("on",on);bar.setAttribute("aria-hidden",on?"false":"true");b.tabIndex=on?0:-1;
+      }
+      var pin=p>=1;
+      if(pin!==pinned){pinned=pin;document.documentElement.style.setProperty("--bar",pin?(H-safe)+"px":"0px");}
     }
-    new IntersectionObserver(function(es){var e=es[0];set(!e.isIntersecting&&e.boundingClientRect.top<0);},{threshold:0}).observe(big);
-    set(false);
+    function req(){if(!ticking){ticking=true;requestAnimationFrame(update);}}
+    window.addEventListener("scroll",req,{passive:true});window.addEventListener("resize",req);
+    update();
   })();
 
   function goTo(target){
