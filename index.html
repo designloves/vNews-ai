@@ -45,7 +45,15 @@ button{font:inherit;color:inherit}
 .nav{background:none;border:1px solid transparent;border-radius:6px;padding:8px 8px;cursor:pointer;font-family:var(--f-label);font-size:13px;letter-spacing:.04em;color:var(--ink-2);white-space:nowrap}
 .nav:hover:not(:disabled){background:var(--paper-2);color:var(--ink)}
 .nav:disabled{opacity:.35;cursor:default}
-.mast{text-align:center;padding-block:14px 10px;border-bottom:3px double var(--rule)}
+.mast{text-align:center;padding-block:14px 6px}
+/* Compact nameplate that stays pinned once the masthead has scrolled away */
+:root{--bar:0px}
+.minibar{position:fixed;left:0;right:0;top:0;z-index:30;background:var(--paper);padding-top:env(safe-area-inset-top,0px);text-align:center;
+  transform:translateY(-100%);transition:transform .22s ease,box-shadow .22s ease;pointer-events:none}
+.minibar.on{transform:none;pointer-events:auto;box-shadow:0 8px 16px -12px rgba(0,0,0,.45)}
+.minibar button{display:block;width:100%;background:none;border:0;padding:8px 16px 9px;cursor:pointer;color:var(--ink);
+  font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-size:34px;line-height:1}
+@media (prefers-reduced-motion: reduce){.minibar{transition:none}}
 .nameplate{margin:0;font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-weight:400;font-size:clamp(38px,10.5vw,72px);line-height:1}
 .mast .sub{margin-top:8px}
 
@@ -138,8 +146,8 @@ details[open] .more .o, details:not([open]) .more .c{display:none}
 @keyframes fabIn{from{transform:translateY(12px) scale(.6);opacity:0}}
 @media (prefers-reduced-motion: reduce){.fab-row,.fab-mini .arr{animation:none!important}.fab{transition:none}}
 /* Section heads stay pinned while you read through their section */
-.sec-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper)}
-.sec-head::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:env(safe-area-inset-top,0px);background:var(--paper)}
+.sec-head{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--bar));z-index:5;background:var(--paper)}
+.sec-head::before{content:"";position:absolute;left:0;right:0;bottom:calc(100% + 3px);height:calc(env(safe-area-inset-top,0px) + var(--bar));background:var(--paper)}
 /* Newspaper section heads: heavy rule, section name on the left, an optional control on the right */
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 6px;padding-top:10px;
   border-top:3px solid var(--ink);padding-bottom:10px}
@@ -603,6 +611,23 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     body.appendChild(msg);
     document.body.appendChild(box);
     tuneSync=function(){scrub.value=0;so.textContent="0";};
+  })();
+
+
+  /* ---------- Pinned nameplate ----------
+     When the big nameplate scrolls out of view, a compact one slides in at the top (tap it to go back up);
+     section heads then pin just below it. */
+  (function(){
+    var big=document.querySelector(".nameplate");if(!big||!("IntersectionObserver" in window))return;
+    var bar=el("div","minibar"),b=el("button",null,big.textContent);b.type="button";b.setAttribute("aria-label","Back to top");
+    bar.appendChild(b);bar.setAttribute("aria-hidden","true");document.body.appendChild(bar);
+    b.addEventListener("click",function(){window.scrollTo({top:0,behavior:REDUCE?"auto":"smooth"});});
+    function set(on){
+      bar.classList.toggle("on",on);bar.setAttribute("aria-hidden",on?"false":"true");b.tabIndex=on?0:-1;
+      document.documentElement.style.setProperty("--bar",on?b.offsetHeight+"px":"0px");
+    }
+    new IntersectionObserver(function(es){var e=es[0];set(!e.isIntersecting&&e.boundingClientRect.top<0);},{threshold:0}).observe(big);
+    set(false);
   })();
 
   function goTo(target){
