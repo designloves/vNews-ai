@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>vNews-ai</title>
+<meta name="description" content="A daily brief of AI, bearing and automotive news for people who build digital products and vehicles.">
+<meta property="og:title" content="vNews-ai">
+<meta property="og:description" content="A daily brief of AI, bearing and automotive news.">
+<meta name="theme-color" content="#eeeadf" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f1e1b" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2212%22%20fill%3D%22%232f2d28%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2245%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2C%27Times%20New%20Roman%27%2Cserif%22%20font-weight%3D%22700%22%20font-size%3D%2236%22%20letter-spacing%3D%22-1%22%20fill%3D%22%23eeeadf%22%3EvN%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&family=Archivo+Narrow:wght@500;600&family=UnifrakturMaguntia&display=swap">
+<style>
+/* One newspaper front page per day: dated masthead, single reading column. Arrows, keys or swipe turn to older/newer editions. */
+:root{
+  --paper:#eeeadf; --paper-2:#e5e0d3; --ink:#2f2d28; --ink-2:#625e55; --rule:#cdc6b6; --link:#3f5a70;
+  --f-serif:"Newsreader","Iowan Old Style",Georgia,"Times New Roman",serif;
+  --f-label:"Archivo Narrow","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --paper:#1f1e1b; --paper-2:#292824; --ink:#d6d1c4; --ink-2:#9b958a; --rule:#3b3933; --link:#a3b8c8; color-scheme:dark;
+}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-serif);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(56px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
+a{color:var(--link);text-decoration-thickness:1px;text-underline-offset:2px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+[hidden]{display:none!important}
+.paper{max-width:680px;margin:0 auto}
+.label{font-family:var(--f-label);font-weight:500;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+
+/* Masthead */
+.dateline{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-block:6px;border-bottom:1px solid var(--rule)}
+.dateline .when{font-family:var(--f-label);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;text-align:center;flex:1;min-width:0}
+.nav{background:none;border:1px solid transparent;border-radius:6px;padding:8px 8px;cursor:pointer;font-family:var(--f-label);font-size:13px;letter-spacing:.04em;color:var(--ink-2);white-space:nowrap}
+.nav:hover:not(:disabled){background:var(--paper-2);color:var(--ink)}
+.nav:disabled{opacity:.35;cursor:default}
+.mast{text-align:center;padding-block:14px 10px;border-bottom:3px double var(--rule)}
+.nameplate{margin:0;font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-weight:400;font-size:clamp(48px,13vw,76px);line-height:1}
+.nameplate sup{font-size:.4em;vertical-align:super;line-height:0;margin-left:.04em}
+.mast .sub{margin-top:8px}
+
+/* Edition */
+#edition{touch-action:pan-y;min-height:50vh}
+.edition{display:flex;flex-direction:column;gap:26px;padding-top:20px}
+.edition.out-left{animation:outL .18s ease-in forwards}
+.edition.out-right{animation:outR .18s ease-in forwards}
+.edition.in-left{animation:inL .22s ease-out}
+.edition.in-right{animation:inR .22s ease-out}
+@keyframes outL{to{transform:translateX(-24px);opacity:0}}
+@keyframes outR{to{transform:translateX(24px);opacity:0}}
+@keyframes inL{from{transform:translateX(24px);opacity:0}}
+@keyframes inR{from{transform:translateX(-24px);opacity:0}}
+@media (prefers-reduced-motion: reduce){.edition{animation:none!important}}
+.lede{margin:0;font-style:italic;font-size:19px;line-height:1.5;text-wrap:pretty}
+.h2{display:flex;align-items:center;gap:10px;margin:0}
+.h2::after{content:"";flex:1;border-top:1px solid var(--rule)}
+.stories{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.story{border-top:1px solid var(--rule)}
+.story:first-child{border-top:0}
+.story summary{list-style:none;cursor:pointer;padding-block:14px;display:flex;flex-direction:column;gap:5px}
+.story summary::-webkit-details-marker{display:none}
+.kick{display:flex;flex-wrap:wrap;gap:4px 10px}
+.kick .top{color:var(--ink);font-weight:600}
+.hl{margin:0;font-weight:600;font-size:20px;line-height:1.25;text-wrap:balance}
+.story.lead .hl{font-size:clamp(23px,5.6vw,28px);font-weight:700;line-height:1.18}
+.why{margin:0;color:var(--ink-2);font-size:16px}
+.byline{display:flex;justify-content:space-between;gap:12px;font-family:var(--f-label);font-size:13px;color:var(--ink-2)}
+.byline .more{white-space:nowrap}
+details[open] .more .o, details:not([open]) .more .c{display:none}
+.body{padding-bottom:16px;display:flex;flex-direction:column;gap:10px}
+.body p{margin:0;max-width:65ch;text-wrap:pretty}
+.body p:first-child::first-letter{font-weight:600}
+.links{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--f-label);font-size:14px}
+.watch{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px}
+.watch li{max-width:65ch}
+.allsrc summary{cursor:pointer;list-style:none}
+.allsrc summary::-webkit-details-marker{display:none}
+.allsrc ol{margin:12px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:4px;font-size:15px;color:var(--ink-2)}
+.allsrc li{overflow-wrap:anywhere}
+.note{margin:0;font-size:14px;color:var(--ink-2);font-style:italic}
+.hint{text-align:center;margin:0}
+.empty{padding-block:48px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
+.empty p{margin:0;max-width:40ch;color:var(--ink-2)}
+footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-align:center}
+</style>
+</head>
+<body>
+<div class="paper">
+  <div class="dateline">
+    <button class="nav" id="older" type="button" aria-label="Older edition" disabled>‹ Older</button>
+    <div class="when" id="when" aria-live="polite">vNews-ai</div>
+    <button class="nav" id="newer" type="button" aria-label="Newer edition" disabled>Newer ›</button>
+  </div>
+  <header class="mast">
+    <h1 class="nameplate">vNews<sup>ai</sup></h1>
+    <div class="sub label" id="sub">AI, bearing and automotive news, every morning</div>
+  </header>
+  <main id="edition">
+    <div class="empty"><div class="label">Fetching editions</div></div>
+  </main>
+  <footer class="label">vNews-ai · A new edition every morning</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var CAT={gen:"AI",ux:"Product & UX",pm:"Strategy & PM",eng:"Engineering AI",bear:"Bearings",auto:"Automotive"};
+  var MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var DAY=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var DATE_RE=/^\d{4}-\d{2}-\d{2}$/;
+  var dates=[], idx=-1, cache={}, busy=false;
+  var main=document.getElementById("edition"), when=document.getElementById("when"), sub=document.getElementById("sub");
+  var olderBtn=document.getElementById("older"), newerBtn=document.getElementById("newer");
+
+  function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=String(text);return e;}
+  function str(v){return typeof v==="string"?v:"";}
+  function arr(v){return Array.isArray(v)?v:[];}
+  function safeUrl(u){return typeof u==="string"&&/^https?:\/\//i.test(u)?u:null;}
+  function link(l){var u=safeUrl(l&&l.url);if(!u)return null;var a=el("a",null,str(l.label)||u);a.href=u;a.target="_blank";a.rel="noopener";return a;}
+  function longDate(id){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(id);if(!m)return id;var d=new Date(Date.UTC(+m[1],+m[2]-1,+m[3]));return DAY[d.getUTCDay()]+" "+(+m[3])+" "+MON[+m[2]-1]+" "+m[1];}
+  function showState(label,text){main.textContent="";var s=el("div","empty");s.appendChild(el("div","label",label));if(text)s.appendChild(el("p",null,text));main.appendChild(s);}
+
+  function getJSON(url){
+    return fetch(url,{cache:"no-cache"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});
+  }
+  function loadEdition(id){
+    if(cache[id])return Promise.resolve(cache[id]);
+    return getJSON("editions/"+id+".json").then(function(x){cache[id]=x||{};return cache[id];});
+  }
+
+  function storyEl(s,lead){
+    var li=el("li","story"+(lead?" lead":""));
+    var d=el("details"),sm=el("summary");
+    var k=el("div","kick label");
+    if(s.top)k.appendChild(el("span","top","Top story"));
+    if(CAT[s.cat])k.appendChild(el("span",null,CAT[s.cat]));
+    if(str(s.date))k.appendChild(el("span",null,s.date));
+    sm.appendChild(k);
+    sm.appendChild(el("h3","hl",str(s.headline)));
+    if(str(s.why))sm.appendChild(el("p","why",s.why));
+    var by=el("div","byline");by.appendChild(el("span",null,str(s.source)));
+    var more=el("span","more");more.appendChild(el("span","o","Read ▾"));more.appendChild(el("span","c","Close ▴"));by.appendChild(more);
+    sm.appendChild(by);d.appendChild(sm);
+    var b=el("div","body");
+    arr(s.body).forEach(function(p){if(str(p))b.appendChild(el("p",null,p));});
+    var ls=arr(s.links).map(link).filter(Boolean);
+    if(ls.length){var lw=el("div","links");ls.forEach(function(a){lw.appendChild(a);});b.appendChild(lw);}
+    d.appendChild(b);li.appendChild(d);return li;
+  }
+
+  function build(id,x){
+    var wrap=el("div","edition");
+    if(str(x.glance))wrap.appendChild(el("p","lede",x.glance));
+    var stories=arr(x.stories).filter(function(s){return s&&typeof s==="object";});
+    stories.sort(function(a,b){return (b.top?1:0)-(a.top?1:0);});
+    if(stories.length){
+      var sec=el("section");sec.appendChild(el("h2","h2 label","Stories"));
+      var ol=el("ol","stories");
+      stories.forEach(function(s){ol.appendChild(storyEl(s,!!s.top));});
+      sec.appendChild(ol);wrap.appendChild(sec);
+    }
+    var w=arr(x.watch).filter(Boolean);
+    if(w.length){var ws=el("section");ws.appendChild(el("h2","h2 label","Worth watching"));var ul=el("ul","watch");
+      w.forEach(function(it){var li=el("li");if(str(it.title)){li.appendChild(el("strong",null,it.title+"."));li.appendChild(document.createTextNode(" "));}
+        li.appendChild(document.createTextNode(str(it.text)+" "));var a=link(it.link);if(a)li.appendChild(a);ul.appendChild(li);});
+      ws.appendChild(ul);wrap.appendChild(ws);}
+    var src=arr(x.sources).map(link).filter(Boolean);
+    if(src.length){var sd=el("details","allsrc");sd.appendChild(el("summary","h2 label","All sources ("+src.length+") ▾"));var so=el("ol");src.forEach(function(a){var li=el("li");li.appendChild(a);so.appendChild(li);});sd.appendChild(so);wrap.appendChild(sd);}
+    if(str(x.note))wrap.appendChild(el("p","note",x.note));
+    if(dates.length>1){
+      var o=idx>0, n=idx<dates.length-1;
+      wrap.appendChild(el("p","hint label","Swipe for "+(o?"older":"")+(o&&n?" or ":"")+(n?"newer":"")+" editions"));
+    }
+    return wrap;
+  }
+
+  function show(i,dir){
+    if(i<0||i>=dates.length||busy)return;
+    busy=true;idx=i;
+    var id=dates[i];
+    when.textContent=longDate(id);
+    olderBtn.disabled=idx<=0;newerBtn.disabled=idx>=dates.length-1;
+    try{history.replaceState(null,"","#"+id);}catch(_){}
+    loadEdition(id).then(function(x){
+      sub.textContent=(str(x.covers)?"Covers "+x.covers+" · ":"")+"Edition "+(idx+1)+" of "+dates.length;
+      var wrap=build(id,x);
+      var swap=function(){main.textContent="";main.appendChild(wrap);if(dir)wrap.classList.add(dir>0?"in-left":"in-right");busy=false;};
+      var old=main.querySelector(".edition");
+      var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(old&&dir&&!reduce){old.classList.add(dir>0?"out-left":"out-right");setTimeout(swap,170);}else swap();
+      // Warm the neighbours so turning the page is instant.
+      if(dates[idx-1])loadEdition(dates[idx-1]).catch(function(){});
+      if(dates[idx+1])loadEdition(dates[idx+1]).catch(function(){});
+    }).catch(function(){
+      busy=false;
+      sub.textContent="Edition "+(idx+1)+" of "+dates.length;
+      showState("Edition unavailable","This edition could not be loaded. Reload the page to try again.");
+    });
+  }
+
+  function go(step){if(busy)return;var n=idx+step;if(n<0||n>=dates.length)return;show(n,step);window.scrollTo({top:0,behavior:"smooth"});}
+  olderBtn.addEventListener("click",function(){go(-1);});
+  newerBtn.addEventListener("click",function(){go(1);});
+  document.addEventListener("keydown",function(e){if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;if(e.key==="ArrowLeft")go(-1);if(e.key==="ArrowRight")go(1);});
+  window.addEventListener("hashchange",function(){var h=dates.indexOf(location.hash.slice(1));if(h>=0&&h!==idx)show(h,h>idx?1:-1);});
+
+  // Swipe: finger moving left shows the newer edition, moving right the older one.
+  var sx=0,sy=0,st=0,track=false;
+  main.addEventListener("touchstart",function(e){if(e.touches.length!==1)return;sx=e.touches[0].clientX;sy=e.touches[0].clientY;st=Date.now();track=true;},{passive:true});
+  main.addEventListener("touchend",function(e){if(!track)return;track=false;var t=e.changedTouches[0];var dx=t.clientX-sx,dy=t.clientY-sy;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.6&&Date.now()-st<800)go(dx<0?1:-1);},{passive:true});
+
+  getJSON("editions/index.json").then(function(ix){
+    var seen={};
+    dates=arr(ix&&ix.editions).filter(function(d){if(typeof d!=="string"||!DATE_RE.test(d)||seen[d])return false;seen[d]=1;return true;}).sort();
+    if(!dates.length){showState("No editions yet","The first edition arrives with the next morning run.");return;}
+    var h=dates.indexOf((location.hash||"").slice(1));
+    show(h>=0?h:dates.length-1,0);
+  }).catch(function(){
+    showState("Editions unavailable","The editions could not be loaded right now. Reload the page to try again.");
+  });
+})();
+</script>
+</body>
+</html>
