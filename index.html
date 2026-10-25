@@ -122,6 +122,10 @@ details[open] .more .o, details:not([open]) .more .c{display:none}
 .ltime{margin-left:2px}
 .story.reading{background:var(--paper-2);margin-inline:-10px;padding-inline:10px;border-radius:6px}
 .story.reading .hl::before{content:"♪ ";font-weight:400;color:var(--ink-2)}
+.more-btn{display:block;width:100%;margin-top:4px;padding:12px;border:1px solid var(--rule);border-radius:999px;background:none;cursor:pointer;
+  font-family:var(--f-label);font-weight:600;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink)}
+.more-btn:hover{background:var(--paper-2)}
+.allnews .stories{margin-top:10px}
 footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-align:center}
 </style>
 </head>
@@ -173,7 +177,6 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     var li=el("li","story"+(lead?" lead":""));
     var d=el("details"),sm=el("summary");
     var k=el("div","kick label");
-    if(s.top)k.appendChild(el("span","top","Top story"));
     if(CAT[s.cat])k.appendChild(el("span",null,CAT[s.cat]));
     if(str(s.date))k.appendChild(el("span",null,s.date));
     sm.appendChild(k);
@@ -194,12 +197,21 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     var stories=arr(x.stories).filter(function(s){return s&&typeof s==="object";});
     stories.sort(function(a,b){return (b.top?1:0)-(a.top?1:0);});
     var bar=listenBar(id,x,stories);if(bar)wrap.appendChild(bar);
-    if(str(x.glance))wrap.appendChild(el("p","lede",x.glance));
-    if(stories.length){
-      var sec=el("section");sec.appendChild(el("h2","h2 label","Stories"));
-      var ol=el("ol","stories");
-      stories.forEach(function(s){ol.appendChild(storyEl(s,!!s.top));});
-      sec.appendChild(ol);wrap.appendChild(sec);
+    // The written summary is not shown; it is what the Listen button reads (see script()).
+    var tops=stories.filter(function(s){return s.top;}),rest=stories.filter(function(s){return !s.top;});
+    if(!tops.length){tops=rest.slice(0,1);rest=rest.slice(1);}   // an edition with no top story still leads with one
+    if(tops.length){
+      var ts=el("section");ts.appendChild(el("h2","h2 label","Top stories"));
+      var tol=el("ol","stories");tops.forEach(function(s){tol.appendChild(storyEl(s,true));});
+      ts.appendChild(tol);wrap.appendChild(ts);
+    }
+    if(rest.length){
+      var as=el("section","allnews");
+      var tog=el("button","more-btn");tog.type="button";tog.setAttribute("aria-expanded","false");
+      var lab=function(open){tog.textContent=(open?"Hide all news ▴":"All news ("+rest.length+") ▾");};lab(false);
+      var aol=el("ol","stories");aol.hidden=true;rest.forEach(function(s){aol.appendChild(storyEl(s,false));});
+      tog.addEventListener("click",function(){var open=aol.hidden;aol.hidden=!open;tog.setAttribute("aria-expanded",String(open));lab(open);});
+      as.appendChild(tog);as.appendChild(aol);wrap.appendChild(as);
     }
     var w=arr(x.watch).filter(Boolean);
     if(w.length){var ws=el("section");ws.appendChild(el("h2","h2 label","Worth watching"));var ul=el("ul","watch");
@@ -245,16 +257,15 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   function script(id,x,stories){
     var items=[];
     function add(text,story){chunks(text).forEach(function(c){items.push({text:c,story:story});});}
+    // Listen reads the spoken brief, a longer version of the summary written for the ear.
+    // Older editions without one fall back to the short summary plus each headline.
     add("Vertical News. "+longDate(id)+".",-1);
-    if(str(x.glance))add(x.glance,-1);
-    stories.forEach(function(s,k){
-      var t=(s.top?"Top story. ":"Story "+(k+1)+" of "+stories.length+". ")+str(s.headline).replace(/[.!?]?$/,".")+" "+str(s.why);
-      add(t,k);
-      arr(s.body).forEach(function(p){if(str(p))add(p,k);});
-    });
-    var w=arr(x.watch).filter(Boolean);
-    if(w.length){add("Worth watching.",-2);w.forEach(function(it){add(str(it.title).replace(/[.!?]?$/,".")+" "+str(it.text),-2);});}
-    add("That's the edition. Thanks for listening.",-2);
+    if(str(x.brief))add(x.brief,-1);
+    else{
+      if(str(x.glance))add(x.glance,-1);
+      stories.forEach(function(s){add(str(s.headline).replace(/[.!?]?$/,".")+" "+str(s.why),-1);});
+    }
+    add("That's the brief. The full stories are on the page.",-1);
     return items;
   }
   function minutes(items){var words=items.reduce(function(n,it){return n+it.text.split(" ").length;},0);return Math.max(1,Math.round(words/160));}
@@ -268,8 +279,8 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   function updateUI(){
     var u=P.ui;if(!u)return;
     u.play.textContent=P.state==="playing"?"❚❚ Pause":P.state==="paused"?"▶ Resume":"▶ Listen";
-    u.play.setAttribute("aria-label",P.state==="playing"?"Pause reading":P.state==="paused"?"Resume reading":"Listen to this edition");
-    u.next.hidden=u.stop.hidden=P.state==="idle";
+    u.play.setAttribute("aria-label",P.state==="playing"?"Pause reading":P.state==="paused"?"Resume reading":"Listen to the brief");
+    u.stop.hidden=P.state==="idle";
     u.time.hidden=P.state!=="idle";
   }
   function speakFrom(i){
@@ -286,29 +297,24 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   }
   function finish(){P.token++;P.state="idle";P.i=0;highlight(-1);updateUI();}
   function stopReading(){if(!canSpeak)return;P.token++;synth.cancel();finish();}
-  function nextStory(){
-    var cur=P.items[P.i]?P.items[P.i].story:-1;
-    for(var j=P.i+1;j<P.items.length;j++){var s=P.items[j].story;if(s!==cur&&(s>=0||s===-2)&&(j===0||P.items[j-1].story!==s)){speakFrom(j);return;}}
-    stopReading();
-  }
+
   // Each edition's bar keeps its own script; it only takes over the player when its Listen button is pressed,
   // so a page built for a turn that gets cancelled never disturbs what is playing.
   function listenBar(id,x,stories){
     if(!canSpeak)return null;
     var items=script(id,x,stories);
     var bar=el("div","listen");
-    var play=el("button","lbtn primary","▶ Listen");play.type="button";play.setAttribute("aria-label","Listen to this edition");
-    var next=el("button","lbtn","Next ›");next.type="button";next.setAttribute("aria-label","Skip to next story");next.hidden=true;
+    var play=el("button","lbtn primary","▶ Listen");play.type="button";play.setAttribute("aria-label","Listen to the brief");
+    
     var stop=el("button","lbtn","Stop");stop.type="button";stop.hidden=true;
     var time=el("span","label ltime","About "+minutes(items)+" min");
-    bar.appendChild(play);bar.appendChild(next);bar.appendChild(stop);bar.appendChild(time);
-    var ui={play:play,next:next,stop:stop,time:time};
+    bar.appendChild(play);bar.appendChild(stop);bar.appendChild(time);
+    var ui={play:play,stop:stop,time:time};
     play.addEventListener("click",function(){
       if(P.ui!==ui){stopReading();P.items=items;P.i=0;P.ui=ui;P.storyAt=-1;}
       if(P.state==="playing"){P.token++;synth.cancel();P.state="paused";updateUI();}
       else speakFrom(P.i);
     });
-    next.addEventListener("click",function(){if(P.ui===ui)nextStory();});
     stop.addEventListener("click",function(){if(P.ui===ui)stopReading();});
     return bar;
   }
