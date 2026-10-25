@@ -52,15 +52,27 @@ button{font:inherit;color:inherit}
 /* Edition */
 #edition{touch-action:pan-y;min-height:50vh}
 .edition{display:flex;flex-direction:column;gap:26px;padding-top:20px}
-.edition.out-left{animation:outL .18s ease-in forwards}
-.edition.out-right{animation:outR .18s ease-in forwards}
-.edition.in-left{animation:inL .22s ease-out}
-.edition.in-right{animation:inR .22s ease-out}
-@keyframes outL{to{transform:translateX(-24px);opacity:0}}
-@keyframes outR{to{transform:translateX(24px);opacity:0}}
-@keyframes inL{from{transform:translateX(24px);opacity:0}}
-@keyframes inR{from{transform:translateX(-24px);opacity:0}}
-@media (prefers-reduced-motion: reduce){.edition{animation:none!important}}
+/* Page turn: a snapshot of the visible page is lifted onto a 3D sheet and turned around the screen edge,
+   revealing the real, already-updated page underneath. */
+.flip-stage{position:fixed;inset:0;z-index:50;perspective:2000px;pointer-events:none;overflow:hidden}
+.flip-under{position:absolute;inset:0;opacity:0}
+.flip-stage.fwd .flip-under{background:linear-gradient(to left,rgba(0,0,0,.34),rgba(0,0,0,.12) 60%,rgba(0,0,0,0))}
+.flip-stage.back .flip-under{background:linear-gradient(to right,rgba(0,0,0,.34),rgba(0,0,0,.12) 60%,rgba(0,0,0,0))}
+.flip-sheet{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.flip-stage.fwd .flip-sheet{transform-origin:left center}
+.flip-stage.back .flip-sheet{transform-origin:right center}
+.flip-front,.flip-back{position:absolute;inset:0;overflow:hidden;background:var(--paper);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.flip-front{box-shadow:0 0 36px rgba(0,0,0,.28)}
+.flip-back{transform:rotateY(180deg);background:var(--paper-2)}
+.flip-stage.fwd .flip-back{background:linear-gradient(to left,var(--paper-2),var(--paper) 70%,var(--paper-2))}
+.flip-stage.back .flip-back{background:linear-gradient(to right,var(--paper-2),var(--paper) 70%,var(--paper-2))}
+.flip-shade{position:absolute;inset:0;opacity:0}
+.flip-stage.fwd .flip-shade{background:linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,.08) 45%,rgba(0,0,0,.42))}
+.flip-stage.back .flip-shade{background:linear-gradient(to left,rgba(0,0,0,0),rgba(0,0,0,.08) 45%,rgba(0,0,0,.42))}
+.flip-gloss{position:absolute;inset:0;opacity:0;mix-blend-mode:soft-light}
+.flip-stage.fwd .flip-gloss{background:linear-gradient(to right,rgba(255,255,255,0) 30%,rgba(255,255,255,.55) 75%,rgba(255,255,255,0))}
+.flip-stage.back .flip-gloss{background:linear-gradient(to left,rgba(255,255,255,0) 30%,rgba(255,255,255,.55) 75%,rgba(255,255,255,0))}
+.flip-clone{position:absolute;margin:0}
 .lede{margin:0;font-style:italic;font-size:19px;line-height:1.5;text-wrap:pretty}
 .h2{display:flex;align-items:center;gap:10px;margin:0}
 .h2::after{content:"";flex:1;border-top:1px solid var(--rule)}
@@ -167,7 +179,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     d.appendChild(b);li.appendChild(d);return li;
   }
 
-  function build(id,x){
+  function build(id,x,at){
     var wrap=el("div","edition");
     var stories=arr(x.stories).filter(function(s){return s&&typeof s==="object";});
     stories.sort(function(a,b){return (b.top?1:0)-(a.top?1:0);});
@@ -188,7 +200,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     if(src.length){var sd=el("details","allsrc");sd.appendChild(el("summary","h2 label","All sources ("+src.length+") ▾"));var so=el("ol");src.forEach(function(a){var li=el("li");li.appendChild(a);so.appendChild(li);});sd.appendChild(so);wrap.appendChild(sd);}
     if(str(x.note))wrap.appendChild(el("p","note",x.note));
     if(dates.length>1){
-      var o=idx>0, n=idx<dates.length-1;
+      var o=at>0, n=at<dates.length-1;
       wrap.appendChild(el("p","hint label","Swipe for "+(o?"older":"")+(o&&n?" or ":"")+(n?"newer":"")+" editions"));
     }
     return wrap;
@@ -269,69 +281,175 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     for(var j=P.i+1;j<P.items.length;j++){var s=P.items[j].story;if(s!==cur&&(s>=0||s===-2)&&(j===0||P.items[j-1].story!==s)){speakFrom(j);return;}}
     stopReading();
   }
+  // Each edition's bar keeps its own script; it only takes over the player when its Listen button is pressed,
+  // so a page built for a turn that gets cancelled never disturbs what is playing.
   function listenBar(id,x,stories){
     if(!canSpeak)return null;
-    stopReading();
-    P.items=script(id,x,stories);P.i=0;
+    var items=script(id,x,stories);
     var bar=el("div","listen");
-    var play=el("button","lbtn primary");play.type="button";
-    var next=el("button","lbtn","Next ›");next.type="button";next.setAttribute("aria-label","Skip to next story");
-    var stop=el("button","lbtn","Stop");stop.type="button";
-    var time=el("span","label ltime","About "+minutes(P.items)+" min");
+    var play=el("button","lbtn primary","▶ Listen");play.type="button";play.setAttribute("aria-label","Listen to this edition");
+    var next=el("button","lbtn","Next ›");next.type="button";next.setAttribute("aria-label","Skip to next story");next.hidden=true;
+    var stop=el("button","lbtn","Stop");stop.type="button";stop.hidden=true;
+    var time=el("span","label ltime","About "+minutes(items)+" min");
     bar.appendChild(play);bar.appendChild(next);bar.appendChild(stop);bar.appendChild(time);
-    P.ui={play:play,next:next,stop:stop,time:time};updateUI();
+    var ui={play:play,next:next,stop:stop,time:time};
     play.addEventListener("click",function(){
+      if(P.ui!==ui){stopReading();P.items=items;P.i=0;P.ui=ui;P.storyAt=-1;}
       if(P.state==="playing"){P.token++;synth.cancel();P.state="paused";updateUI();}
       else speakFrom(P.i);
     });
-    next.addEventListener("click",nextStory);
-    stop.addEventListener("click",stopReading);
+    next.addEventListener("click",function(){if(P.ui===ui)nextStory();});
+    stop.addEventListener("click",function(){if(P.ui===ui)stopReading();});
     return bar;
   }
+  function releasePlayer(){stopReading();P.ui=null;P.items=[];P.storyAt=-1;}
   window.addEventListener("pagehide",function(){if(canSpeak)synth.cancel();});
 
-  function show(i,dir){
-    if(i<0||i>=dates.length||busy)return;
-    busy=true;idx=i;
-    var id=dates[i];
-    when.textContent=longDate(id);
-    olderBtn.disabled=idx<=0;newerBtn.disabled=idx>=dates.length-1;
-    try{history.replaceState(null,"","#"+id);}catch(_){}
-    loadEdition(id).then(function(x){
-      sub.textContent=(str(x.covers)?"Covers "+x.covers+" · ":"")+"Edition "+(idx+1)+" of "+dates.length;
-      var wrap=build(id,x);
-      var swap=function(){main.textContent="";main.appendChild(wrap);if(dir)wrap.classList.add(dir>0?"in-left":"in-right");busy=false;};
-      var old=main.querySelector(".edition");
-      var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if(old&&dir&&!reduce){old.classList.add(dir>0?"out-left":"out-right");setTimeout(swap,170);}else swap();
-      // Warm the neighbours so turning the page is instant.
-      if(dates[idx-1])loadEdition(dates[idx-1]).catch(function(){});
-      if(dates[idx+1])loadEdition(dates[idx+1]).catch(function(){});
-    }).catch(function(){
-      busy=false;
-      sub.textContent="Edition "+(idx+1)+" of "+dates.length;
-      showState("Edition unavailable","This edition could not be loaded. Reload the page to try again.");
-    });
+  /* ---------- Showing an edition ---------- */
+  function header(i,x){
+    when.textContent=longDate(dates[i]);
+    sub.textContent=(str(x.covers)?"Covers "+x.covers+" · ":"")+"Edition "+(i+1)+" of "+dates.length;
+    olderBtn.disabled=i<=0;newerBtn.disabled=i>=dates.length-1;
+  }
+  function mount(i,wrap,x){idx=i;main.textContent="";main.appendChild(wrap);header(i,x);}
+  function settled(){
+    try{history.replaceState(null,"","#"+dates[idx]);}catch(_){}
+    // Warm the neighbours so the next turn can start the instant a finger moves.
+    if(dates[idx-1])loadEdition(dates[idx-1]).catch(function(){});
+    if(dates[idx+1])loadEdition(dates[idx+1]).catch(function(){});
+  }
+  function showNow(i){
+    var id=dates[i];busy=true;
+    loadEdition(id).then(function(x){releasePlayer();mount(i,build(id,x,i),x);window.scrollTo(0,0);busy=false;settled();})
+    .catch(function(){busy=false;idx=i;when.textContent=longDate(id);sub.textContent="Edition "+(i+1)+" of "+dates.length;
+      olderBtn.disabled=i<=0;newerBtn.disabled=i>=dates.length-1;
+      showState("Edition unavailable","This edition could not be loaded. Reload the page to try again.");});
   }
 
-  function go(step){if(busy)return;var n=idx+step;if(n<0||n>=dates.length)return;show(n,step);window.scrollTo({top:0,behavior:"smooth"});}
+  /* ---------- Page turn ----------
+     dir +1 turns forward to a newer day (sheet hinges on the left edge, like turning a page in a book);
+     dir -1 turns back to an older day (hinges on the right edge). */
+  var REDUCE=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var turn=null;
+  function beginTurn(target,dir){
+    if(turn||busy||target<0||target>=dates.length||target===idx)return null;
+    var x=cache[dates[target]];if(!x)return null;
+    var prev={i:idx,wrap:main.firstElementChild,x:cache[dates[idx]],y:window.scrollY};
+    releasePlayer();
+    // 1. Photograph the page as it looks now onto a sheet that floats above everything.
+    var paper=document.querySelector(".paper"),r=paper.getBoundingClientRect();
+    var stage=el("div","flip-stage "+(dir>0?"fwd":"back")),under=el("div","flip-under"),sheet=el("div","flip-sheet"),
+        front=el("div","flip-front"),back=el("div","flip-back"),shade=el("div","flip-shade"),gloss=el("div","flip-gloss");
+    var clone=paper.cloneNode(true);clone.classList.add("flip-clone");
+    clone.querySelectorAll("[id]").forEach(function(n){n.removeAttribute("id");});
+    clone.style.left=r.left+"px";clone.style.top=r.top+"px";clone.style.width=r.width+"px";
+    front.appendChild(clone);front.appendChild(shade);front.appendChild(gloss);
+    sheet.appendChild(front);sheet.appendChild(back);stage.appendChild(under);stage.appendChild(sheet);
+    stage.setAttribute("aria-hidden","true");
+    document.body.appendChild(stage);
+    // 2. Underneath, the real page becomes the new day, opened at the top. The old edition stays in the document
+    //    (hidden) until the turn ends: the finger's touch events belong to it, and removing it would stop them arriving.
+    var nextWrap=build(dates[target],x,target);
+    if(prev.wrap)prev.wrap.style.display="none";
+    main.appendChild(nextWrap);idx=target;header(target,x);
+    window.scrollTo(0,0);
+    var p=0,raf=0;
+    function set(v){
+      p=Math.max(0,Math.min(1,v));
+      var a=(dir>0?-180:180)*p;
+      // A slight lift towards the viewer and a touch of skew make the sheet feel like paper rather than a card.
+      sheet.style.transform="translateZ("+(Math.sin(p*Math.PI)*40).toFixed(1)+"px) rotateY("+a.toFixed(2)+"deg)";
+      shade.style.opacity=Math.min(1,p*2).toFixed(3);
+      gloss.style.opacity=(Math.sin(p*Math.PI)*0.9).toFixed(3);
+      under.style.opacity=(1-p).toFixed(3);
+    }
+    function done(ok){
+      cancelAnimationFrame(raf);
+      if(ok){if(prev.wrap&&prev.wrap!==nextWrap)prev.wrap.remove();}
+      else{nextWrap.remove();if(prev.wrap)prev.wrap.style.display="";idx=prev.i;header(prev.i,prev.x);window.scrollTo(0,prev.y);}
+      stage.remove();turn=null;
+      if(ok)settled();
+    }
+    function animate(to,ms,ease,cb){
+      cancelAnimationFrame(raf);
+      var from=p,t0=performance.now();
+      if(REDUCE||ms<=0){set(to);cb();return;}
+      (function step(now){
+        var k=Math.min(1,(now-t0)/ms);set(from+(to-from)*ease(k));
+        if(k<1)raf=requestAnimationFrame(step);else cb();
+      })(t0);
+    }
+    function easeInOut(k){return k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;}
+    function easeOut(k){return 1-Math.pow(1-k,3);}
+    set(0);
+    turn={
+      dir:dir,
+      set:set,
+      progress:function(){return p;},
+      play:function(){animate(1,820,easeInOut,function(){done(true);});},
+      release:function(commit){
+        if(commit)animate(1,Math.max(260,560*(1-p)),easeOut,function(){done(true);});
+        else animate(0,Math.max(200,420*p),easeOut,function(){done(false);});
+      }
+    };
+    return turn;
+  }
+
+  function goTo(target){
+    if(turn||busy||target<0||target>=dates.length||target===idx)return;
+    var dir=target>idx?1:-1;
+    var start=function(){var t=beginTurn(target,dir);if(t)t.play();else showNow(target);};
+    if(cache[dates[target]])start();
+    else{busy=true;loadEdition(dates[target]).then(function(){busy=false;start();},function(){busy=false;showNow(target);});}
+  }
+  function go(step){goTo(idx+step);}
   olderBtn.addEventListener("click",function(){go(-1);});
   newerBtn.addEventListener("click",function(){go(1);});
   document.addEventListener("keydown",function(e){if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;if(e.key==="ArrowLeft")go(-1);if(e.key==="ArrowRight")go(1);});
-  window.addEventListener("hashchange",function(){var h=dates.indexOf(location.hash.slice(1));if(h>=0&&h!==idx)show(h,h>idx?1:-1);});
+  window.addEventListener("hashchange",function(){var h=dates.indexOf(location.hash.slice(1));if(h>=0&&h!==idx)goTo(h);});
 
-  // Swipe: finger moving left shows the newer edition, moving right the older one.
-  var sx=0,sy=0,st=0,track=false;
-  main.addEventListener("touchstart",function(e){if(e.touches.length!==1)return;sx=e.touches[0].clientX;sy=e.touches[0].clientY;st=Date.now();track=true;},{passive:true});
-  main.addEventListener("touchend",function(e){if(!track)return;track=false;var t=e.changedTouches[0];var dx=t.clientX-sx,dy=t.clientY-sy;
-    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.6&&Date.now()-st<800)go(dx<0?1:-1);},{passive:true});
+  /* Finger-driven turn: once a swipe is clearly sideways the sheet follows the finger;
+     letting go past about a third of the screen (or with a quick flick) completes the turn, otherwise it falls back.
+     Finger moving left turns forward to the newer day, moving right turns back to the older one. */
+  var g=null;
+  document.addEventListener("touchstart",function(e){
+    if(turn||busy||e.touches.length!==1){g=null;return;}
+    var t=e.touches[0];g={x:t.clientX,y:t.clientY,mode:"?",lx:t.clientX,lt:performance.now(),v:0};
+  },{passive:true});
+  document.addEventListener("touchmove",function(e){
+    if(!g||e.touches.length!==1)return;
+    var t=e.touches[0],dx=t.clientX-g.x,dy=t.clientY-g.y,now=performance.now();
+    if(g.mode==="?"){
+      if(Math.abs(dx)<10&&Math.abs(dy)<10)return;
+      if(Math.abs(dx)>Math.abs(dy)*1.2){
+        var dir=dx<0?1:-1,target=idx+dir;
+        g.mode=(target>=0&&target<dates.length&&cache[dates[target]]&&beginTurn(target,dir))?"turn":"edge";
+        if(g.mode==="edge"&&dates[target]&&!cache[dates[target]])loadEdition(dates[target]).catch(function(){});
+      }else g.mode="scroll";
+    }
+    if(g.mode==="scroll")return;
+    if(e.cancelable)e.preventDefault();
+    if(g.mode==="turn"&&turn){
+      var w=window.innerWidth*0.85;
+      turn.set((turn.dir>0?-dx:dx)/w);
+      var dt=now-g.lt;if(dt>0){g.v=(t.clientX-g.lx)/dt;g.lx=t.clientX;g.lt=now;}
+    }
+  },{passive:false});
+  function endGesture(cancelled){
+    if(!g)return;var m=g.mode,v=g.v;g=null;
+    if(m!=="turn"||!turn)return;
+    var p=turn.progress(),flick=(turn.dir>0?-v:v);
+    turn.release(!cancelled&&(p>0.33||(flick>0.45&&p>0.04)));
+  }
+  document.addEventListener("touchend",function(){endGesture(false);},{passive:true});
+  document.addEventListener("touchcancel",function(){endGesture(true);},{passive:true});
 
   getJSON("editions/index.json").then(function(ix){
     var seen={};
     dates=arr(ix&&ix.editions).filter(function(d){if(typeof d!=="string"||!DATE_RE.test(d)||seen[d])return false;seen[d]=1;return true;}).sort();
     if(!dates.length){showState("No editions yet","The first edition arrives with the next morning run.");return;}
     var h=dates.indexOf((location.hash||"").slice(1));
-    show(h>=0?h:dates.length-1,0);
+    showNow(h>=0?h:dates.length-1);
   }).catch(function(){
     showState("Editions unavailable","The editions could not be loaded right now. Reload the page to try again.");
   });
