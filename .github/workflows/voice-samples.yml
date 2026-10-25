@@ -1,0 +1,46 @@
+name: Record voice samples
+
+# One-off comparison: the brief for one edition in several Kokoro voices, published at /samples/.
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Edition date (YYYY-MM-DD)"
+        default: "2026-10-23"
+  push:
+    branches: [main]
+    paths:
+      - "tools/voice_samples.py"
+      - ".github/workflows/voice-samples.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  samples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Kokoro (CPU) and tools
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg espeak-ng
+          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet "kokoro>=0.9.4" soundfile numpy
+
+      - name: Record samples
+        run: python tools/voice_samples.py "${{ github.event.inputs.date || '2026-10-23' }}"
+
+      - name: Commit samples
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add samples
+          if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi
+          git commit -m "Voice samples"
+          for i in 1 2 3; do git pull --rebase --quiet origin main && git push && exit 0; sleep 5; done
+          exit 1
