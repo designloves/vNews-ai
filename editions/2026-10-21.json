@@ -1,0 +1,348 @@
+{
+  "covers": "Tue 20 – Wed 21 Oct",
+  "date": "2026-10-21",
+  "glance": "Germany and Nvidia signed a declaration on industrial physical AI, a few hours before Jensen Huang's GTC Berlin keynote. Anthropic showed Claude running a 64-hour protein-design campaign largely on its own, and Notion rebuilt its agents around a cost-aware model router and a credit system. That router-plus-credits approach is quickly becoming the standard way to price AI products. For engineering, Eka's simulation-trained force-sensing robots and a new map of the industrial AI software stack round out the day.",
+  "note": "All summaries are paraphrased. Benchmark and performance figures are vendor-reported. The Fireworks talks and the AWS figures come from press reports and are not confirmed by the companies. Written before the GTC Berlin keynote.",
+  "quiet": [
+    {
+      "cat": "ux",
+      "text": "Quiet window for design tools. Figma, Framer and Adobe shipped no notable AI releases since Figma's Specs and code layers launch on 14 October. Today's UX stories are about AI patterns in products rather than design tools."
+    }
+  ],
+  "sources": [
+    {
+      "label": "AI News – Germany and NVIDIA sign industrial AI declaration in Berlin (20 Oct)",
+      "url": "https://www.artificialintelligence-news.com/news/germany-nvidia-sign-industrial-ai-declaration-in-berlin/"
+    },
+    {
+      "label": "Nvidia – GTC Berlin and European tour live blog (12–21 Oct)",
+      "url": "https://blogs.nvidia.com/gtc-berlin-2026-news/"
+    },
+    {
+      "label": "Anthropic – Claude designs scorpion-toxin binders (20 Oct)",
+      "url": "https://www.anthropic.com/research/claude-scorpion-toxin-binder-design"
+    },
+    {
+      "label": "Notion – Agents, rebuilt to do more for less (19 Oct)",
+      "url": "https://www.notion.com/blog/notion-ai-more-for-less"
+    },
+    {
+      "label": "OpenAI – Low-resource programming languages evaluations (19 Oct)",
+      "url": "https://openai.com/index/low-resource-programming-languages/"
+    },
+    {
+      "label": "Dataconomy – OpenAI GPT-6 COBOL migration gains (20 Oct)",
+      "url": "https://dataconomy.com/2026/10/20/openai-gpt-6-cobol-coding-migration-gains/"
+    },
+    {
+      "label": "9to5Google – Gemini Personal Intelligence on Android Auto (20 Oct)",
+      "url": "https://9to5google.com/2026/10/20/gemini-android-auto-personal-intelligence/"
+    },
+    {
+      "label": "Redact – WhatsApp help pages hidden AI instructions (19 Oct)",
+      "url": "https://redact.dev/blog/whatsapp-help-pages-hidden-ai-instructions"
+    },
+    {
+      "label": "TechCrunch – Eka valued at $1.45B for physical AI model (20 Oct)",
+      "url": "https://techcrunch.com/2026/10/20/eka-is-worth-1-45-billion-thanks-to-a-physical-ai-model-that-has-experts-raving/"
+    },
+    {
+      "label": "IoT Analytics – The emerging industrial AI tech stack (19 Oct)",
+      "url": "https://iot-analytics.com/industrial-ai-tech-stack/"
+    },
+    {
+      "label": "SiliconANGLE – Otter.ai raises $320M (20 Oct)",
+      "url": "https://siliconangle.com/2026/10/20/otter-ai-raises-320m-in-funding-for-its-ai-meeting-assistant"
+    },
+    {
+      "label": "Bloomberg – Nvidia-backed Pigment raises $250M (20 Oct)",
+      "url": "https://bloomberg.com/news/articles/2026-10-20/nvidia-backed-pigment-nabs-250-million-to-challenge-microsoft"
+    },
+    {
+      "label": "Remote Work Europe – Italy AI decree takes effect 23 October (20 Oct)",
+      "url": "https://remoteworkeurope.eu/news/2026/italy-ai-decree-human-decision-employment-23-october/"
+    },
+    {
+      "label": "AI Weekly – UK cyber bill AI-agent incident reporting (21 Oct)",
+      "url": "https://aiweekly.co/alerts/uk-cyber-bill-would-force-firms-to-report-ai-agent-incidents"
+    },
+    {
+      "label": "Startup Fortune – Fireworks AI in talks at up to $40B (21 Oct)",
+      "url": "https://startupfortune.com/fireworks-ai-is-in-talks-to-double-its-valuation-to-40-billion-dollars/"
+    },
+    {
+      "label": "AI Weekly – Super Micro preannounces Q1 above guidance (21 Oct)",
+      "url": "https://aiweekly.co/alerts/super-micro-preannounces-185b195b-fiscal-q1-beating-guidance-by-4b-on-ai-server"
+    },
+    {
+      "label": "TechCrunch – Tesla and SpaceX boards form merger committees (20 Oct)",
+      "url": "https://techcrunch.com/2026/10/20/spacex-and-tesla-boards-form-special-committees-to-review-merger/"
+    },
+    {
+      "label": "AI Weekly – AI News Today, 20–21 Oct",
+      "url": "https://aiweekly.co/ai-news-today"
+    }
+  ],
+  "stories": [
+    {
+      "body": [
+        "At the Invest in Germany Summit in Berlin on 20 October, Chancellor Friedrich Merz and Nvidia CEO Jensen Huang set out a joint declaration of intent. The economy and research ministries signed it. It commits both sides to a joint initiative on advanced physical AI models: models that perceive, simulate and act in the physical world. It also formally expands Nvidia's work with Germany's Industry 4.0 platform. Nvidia also named four German startups it will invest in, including Munich robot maker Agile Robots. No amounts were given. These sit within its pledge of nearly $10 billion across Europe.",
+        "The showcase was again Siemens' Erlangen factory, where agents propose production changes that are first tested in a digital twin. Siemens claims up to 85% less engineering effort for a virtual ramp-up and up to 20% savings from agent-based planning. These are vendor figures with no published baselines.",
+        "For OEM engineering, the direction is clear: public money and policy in Europe's biggest car market are moving behind virtual validation and simulation-trained AI. Expect more funded programmes and supplier requirements built on these Omniverse-style toolchains."
+      ],
+      "cat": "eng",
+      "date": "20 Oct",
+      "headline": "Germany and Nvidia sign a declaration of intent on industrial physical AI",
+      "links": [
+        {
+          "label": "AI News",
+          "url": "https://www.artificialintelligence-news.com/news/germany-nvidia-sign-industrial-ai-declaration-in-berlin/"
+        },
+        {
+          "label": "Nvidia GTC Berlin blog",
+          "url": "https://blogs.nvidia.com/gtc-berlin-2026-news/"
+        }
+      ],
+      "source": "AI News · Nvidia",
+      "top": true,
+      "why": "Germany's government is now actively backing the simulation-first, digital-twin route to building cars and factories."
+    },
+    {
+      "body": [
+        "Anthropic's science team gave an internal research version of Claude the task of designing minibinders, small proteins that latch onto a target, against five scorpion neurotoxins. Over about 64 hours, with four human follow-ups, Claude chose the target structures, ran 12 protein-design tools, generated 318,484 designs and co-folded over 550,000 design–toxin pairs. It then set quality thresholds and picked 180 candidates. Humans added 31 more, and two labs tested them.",
+        "Seventeen designs bound their targets. The best had single-digit nanomolar affinity. 11 of 60 single-toxin designs worked (18%), but none of the multi-toxin designs did. The run used roughly 10,000 GPU hours. Anthropic stresses that only binding to recombinant toxins was shown, with no neutralisation or animal tests, so this is not an antivenom.",
+        "The pattern carries over to engineering: an agent that controls a toolchain, screens huge design spaces in simulation and hands a short list to physical testing. Swap protein folding for FE or multibody models and you have the virtual-validation loop many CAE teams are trying to automate."
+      ],
+      "cat": "gen",
+      "date": "20 Oct",
+      "headline": "Claude ran a largely autonomous 64-hour campaign that produced 17 lab-confirmed toxin binders",
+      "links": [
+        {
+          "label": "Anthropic",
+          "url": "https://www.anthropic.com/research/claude-scorpion-toxin-binder-design"
+        }
+      ],
+      "source": "Anthropic",
+      "top": true,
+      "why": "This is a concrete benchmark for long-running agents doing real R&D: a pipeline of design, simulation, selection and lab testing, with humans stepping in only a few times."
+    },
+    {
+      "body": [
+        "Notion's sixth-generation agent harness runs each session on a dedicated, queue-backed service, so tasks survive restarts. Agent runtime grows from about five minutes to more than 24 hours. Agents can now write scripts for computer and browser tasks instead of spending model tokens. They run up to 50% faster, and a new \"Review for me\" mode uses a separate model to check whether an action is safe before the agent takes it.",
+        "The bigger change is the business model. An upgraded Auto router sends simple requests to cheap models and hard ones to frontier models, and switches models when one stalls. Notion says this matched top-model quality across 20+ use cases at about 90% lower average cost. Business and Enterprise seats now include 1,500 Standard credits (Notion picks the model) and 500 Select credits (you pick) per month. Existing customers move to the new system on 2 November. ChatGPT accounts can also power a personal Notion agent, and Enterprise customers get bring-your-own-key in alpha.",
+        "For product teams, this is now the reference design: hide model choice behind a router, sell tiered credits, and make the safety check visible in the UX."
+      ],
+      "cat": "pm",
+      "date": "19–20 Oct",
+      "headline": "Notion rebuilds its agents around a cost-aware model router and monthly credits",
+      "links": [
+        {
+          "label": "Notion blog",
+          "url": "https://www.notion.com/blog/notion-ai-more-for-less"
+        }
+      ],
+      "source": "Notion",
+      "top": true,
+      "why": "This is a clear template for packaging AI features: auto-routing to cut cost, credits to price usage, and a separate verifier for risky actions."
+    },
+    {
+      "body": [
+        "OpenAI published two of its own evaluations. MultiLangBench asks models to build a SQLite-compatible database engine in each of 20 languages. GPT-6 Astra averaged an 87.4% test pass rate, up from 26.8% for GPT-5.6 Sol, and scored above 83% in 19 of the 20 languages. COBOL rose from 10.9% to 72.1%, Fortran from 21.4% to 83.5% and Visual Basic from 27.5% to 89.4%. The cheaper GPT-6 Luna averaged 40.3% at about $0.77 per sample.",
+        "A second test migrates COBOL programs to Java, Rust, Python and other languages and requires byte-for-byte identical output. GPT-6.1 Sol hit 86.6% at low reasoning effort, up from 5.4% for its predecessor, and 97.9% at higher effort, at lower cost. OpenAI released the benchmark harness on GitHub. Outside groups have not yet verified the results.",
+        "Many engineering organisations still rely on old Fortran solvers, VB test-rig scripts and Excel macros. Behaviour-preserving migration with test parity is exactly what makes modernising them less risky."
+      ],
+      "cat": "gen",
+      "date": "19–20 Oct",
+      "headline": "OpenAI's GPT-6 models make big gains on COBOL, Fortran and other legacy languages",
+      "links": [
+        {
+          "label": "OpenAI",
+          "url": "https://openai.com/index/low-resource-programming-languages/"
+        },
+        {
+          "label": "Dataconomy",
+          "url": "https://dataconomy.com/2026/10/20/openai-gpt-6-cobol-coding-migration-gains/"
+        }
+      ],
+      "source": "OpenAI · Dataconomy",
+      "top": false,
+      "why": "Engineering codebases full of old Fortran and VB tools are suddenly realistic candidates for AI-assisted migration."
+    },
+    {
+      "body": [
+        "Google began rolling out Personal Intelligence for Gemini on Android Auto on 20 October. Support for cars with Google built-in (Android Automotive) is due in the coming months. Gemini can draw on Gmail, Calendar, Photos, Maps, Search and YouTube to answer without the driver spelling out details. Examples include a flight's gate and on-time status in one reply, navigating to an appointment without looking up the address, or finding a car wash from a photo taken earlier.",
+        "It is opt-in. Users who enabled it on their phone get it in the car automatically. On built-in systems, personal answers are shared only while the phone is connected. Without it, navigation, music and calls work as before, just without personalisation.",
+        "From a UX point of view, the car becomes a place where proactive, context-aware help competes with distraction and privacy concerns, especially with passengers present. For OEM HMI teams, it raises the bar for native voice assistants and makes it more important to decide how much of the in-cabin experience to hand over to Google."
+      ],
+      "cat": "ux",
+      "date": "20 Oct",
+      "headline": "Gemini's Personal Intelligence arrives in Android Auto",
+      "links": [
+        {
+          "label": "9to5Google",
+          "url": "https://9to5google.com/2026/10/20/gemini-android-auto-personal-intelligence/"
+        }
+      ],
+      "source": "9to5Google",
+      "top": false,
+      "why": "In-car assistants that pull context from your mail, calendar and photos change what drivers expect from a car's HMI."
+    },
+    {
+      "body": [
+        "A researcher saved 545 WhatsApp help pages and found 102 hidden instruction blocks across 80 of them. The blocks were sent with each page but never shown on screen, and were addressed to WhatsApp's support chatbot. Some told the bot not to suggest contacting a data protection regulator when users could not delete their accounts. Others said not to cite privacy laws such as GDPR once a user mentioned a lawyer or a court. Other notes were protective, such as warnings that deleting a group chat can destroy evidence of a scam.",
+        "WhatsApp told WIRED the notes were for its support bot, appeared because of a bug, and have been removed. Checks of 300 Facebook and Instagram help pages found nothing similar. The researcher did not test whether the bot actually followed the notes.",
+        "For anyone designing AI support flows, the lesson is that instructions to the bot are product copy too. They need the same review, transparency and regulatory scrutiny as visible UI text. In the EU, steering users away from their rights is exactly what consumer and data regulators look for."
+      ],
+      "cat": "ux",
+      "date": "19–20 Oct",
+      "headline": "WhatsApp help pages hid AI-only instructions that steered users away from regulators",
+      "links": [
+        {
+          "label": "Redact",
+          "url": "https://redact.dev/blog/whatsapp-help-pages-hidden-ai-instructions"
+        },
+        {
+          "label": "AI Weekly",
+          "url": "https://aiweekly.co/alerts/whatsapp-hid-102-llm-only-prompts-that-blocked-ai-from-pointing"
+        }
+      ],
+      "source": "Redact · AI Weekly",
+      "top": false,
+      "why": "Content written for AI readers is now a design surface of its own, and it can quietly become a dark pattern."
+    },
+    {
+      "body": [
+        "Eka, co-founded by MIT professor Pulkit Agrawal and former DeepMind researcher Tuomas Haarnoja, raised a $150 million Series A at a $1.45 billion valuation, led by a16z and F-Prime. Instead of the popular vision-language-action models, it uses a vision-force-action model: vision gives a rough location, and force sensing in a custom gripper does the actual grasping. The model is trained with reinforcement learning in a physics simulator, not on human demonstration videos.",
+        "Eka claims about 1,500 picks per hour for objects up to 1 kg, against roughly 600 for a human, with over 95% success. It is running undisclosed industrial pilots in pick-and-place and wire handling. The gripper costs under $1,000 and is rated for 5 million cycles, well short of the roughly 20 million expected of industrial arms.",
+        "For vehicle engineering, this approach depends on how accurate the contact simulation is. Friction, compliance and contact dynamics, the same physics behind bearing and joint modelling, become what decides whether training transfers to real hardware."
+      ],
+      "cat": "eng",
+      "date": "20 Oct",
+      "headline": "Eka raises $150M for force-sensing robots trained in physics simulation",
+      "links": [
+        {
+          "label": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/20/eka-is-worth-1-45-billion-thanks-to-a-physical-ai-model-that-has-experts-raving/"
+        }
+      ],
+      "source": "TechCrunch",
+      "top": false,
+      "why": "This is a sim-to-real bet on contact and force rather than vision and language, which matters for assembly and test automation."
+    },
+    {
+      "body": [
+        "Based on more than 30 interviews at IMTS 2026, IoT Analytics describes an eight-layer, AI-led stack forming on top of the classic ISA-95 pyramid. ERP, MES and historians remain the systems of record. Above them sit a software-defined edge, industrial DataOps, a knowledge-graph layer that gives data context, interface protocols such as MCP and A2A, agents, and human-in-the-loop apps.",
+        "Vendors already showing MCP servers include PTC (an Onshape FeatureScript server), Rockwell (Emulate3D, with domain skills), MachineMetrics, Limble and Vention, whose server covers designs and a digital twin. The analysts warn that these servers vary widely: some expose real application logic, others are thin read-only wrappers. Anthropic's Model Hardware Standard for letting agents operate devices is expected to spread more slowly, because of determinism and safety concerns.",
+        "Open questions include who will own the knowledge graph: software vendors, hyperscalers or data platforms. For simulation and test teams, the practical step is to find out which of your tools expose real logic through MCP. That will decide what an agent can actually do with your validation data."
+      ],
+      "cat": "eng",
+      "date": "19 Oct",
+      "headline": "Analysis: a new AI layer, built on MCP and knowledge graphs, is forming on top of factory software",
+      "links": [
+        {
+          "label": "IoT Analytics",
+          "url": "https://iot-analytics.com/industrial-ai-tech-stack/"
+        }
+      ],
+      "source": "IoT Analytics",
+      "top": false,
+      "why": "This maps where agents will plug into PLM, MES and test data, including CAD tools like Onshape that already expose MCP servers."
+    },
+    {
+      "body": [
+        "Paris-based Pigment, which makes business planning software, raised $250 million at a $2.3 billion valuation. The round was led by the EU-backed Scaleup Europe Fund, with Nvidia also investing. Pigment pitches itself as a European alternative to planning work done in Excel and PowerPoint. It is one of the first visible bets from the new public–private scale-up fund.",
+        "Otter.ai raised $320 million from General Catalyst's Customer Value Fund. General Catalyst takes no equity and instead gets a share of the revenue that the extra sales and marketing spend brings in. Otter reports more than 40 million users and use at over 86% of Fortune 500 companies. It is adding pre-meeting briefs, role-specific tools and an MCP server so other chatbots can read meeting transcripts.",
+        "Taken together, these rounds suggest that AI SaaS companies with proven usage can now fund growth without heavy dilution. Europe is also starting to back its own AI application companies, not just infrastructure."
+      ],
+      "cat": "pm",
+      "date": "20 Oct",
+      "headline": "Pigment and Otter raise big rounds, and Otter's comes with no equity",
+      "links": [
+        {
+          "label": "SiliconANGLE (Otter)",
+          "url": "https://siliconangle.com/2026/10/20/otter-ai-raises-320m-in-funding-for-its-ai-meeting-assistant"
+        },
+        {
+          "label": "AI Weekly (Pigment)",
+          "url": "https://aiweekly.co/alerts/pigment-raises-250m-at-23b-with-nvidia-and-scaleup-europe-to-challenge"
+        }
+      ],
+      "source": "Bloomberg via AI Weekly · SiliconANGLE",
+      "top": false,
+      "why": "European AI-native planning is taking on Microsoft head-on, while revenue-based financing offers a new way to fund AI go-to-market."
+    },
+    {
+      "body": [
+        "Italy's legislative decree no. 179/2026, which implements its national AI law alongside the EU AI Act, takes effect on 23 October. According to Italian employment lawyers, its Article 41 says decisions to hire, change, discipline, evaluate or dismiss workers cannot rest solely on automated processing. A person must make the final call, worker consent is no exception, and dismissals that break the rule are void. Algorithmic CV screening reportedly remains allowed.",
+        "In the UK, proposed amendments to the Cyber Security and Resilience Bill would require essential-service providers to report incidents involving AI agents acting outside human control, and would let the government inspect them. They would also narrow data centres' mandatory reporting duties. This follows the EU AI Office's first information requests to OpenAI and Anthropic over agent incidents last week.",
+        "For product teams building HR, workflow or agent features for European customers, a person making the final decision and being able to report agent incidents are becoming hard requirements. Build audit trails and approval steps into the product now."
+      ],
+      "cat": "gen",
+      "date": "20–21 Oct",
+      "headline": "Europe tightens rules on agents and on automated HR decisions",
+      "links": [
+        {
+          "label": "Remote Work Europe",
+          "url": "https://remoteworkeurope.eu/news/2026/italy-ai-decree-human-decision-employment-23-october/"
+        },
+        {
+          "label": "AI Weekly (UK bill)",
+          "url": "https://aiweekly.co/alerts/uk-cyber-bill-would-force-firms-to-report-ai-agent-incidents"
+        }
+      ],
+      "source": "Remote Work Europe · MLex via AI Weekly",
+      "top": false,
+      "why": "Rules on AI agents and on automated decisions are arriving country by country, not just through the AI Act."
+    },
+    {
+      "body": [
+        "Inference provider Fireworks AI is reportedly in early talks to raise money at a $30–40 billion valuation, roughly double the $17.5 billion it was valued at in July. The company says it processes more than 40 trillion tokens a day and has passed $1 billion in annualised revenue, about five times last year. Fireworks did not comment on the terms.",
+        "Server maker Super Micro said fiscal Q1 revenue should come in at $18.5–19.5 billion, well above its earlier guidance, citing demand for AI platforms. Meanwhile, internal AWS recordings reported by Business Insider say its AI business is deeply cash-flow negative and will stay that way for a couple of years. Amazon plans about $220 billion in capital spending for 2026.",
+        "Last week's worries about Nscale's IPO valuation have not stopped the money. For anyone pricing AI features, inference is a crowded, heavily subsidised market. Prices are likely to keep falling in the short term, but it is risky to lock in a single provider."
+      ],
+      "cat": "gen",
+      "date": "20–21 Oct",
+      "headline": "AI infrastructure money keeps flowing: Fireworks eyes a $30–40B valuation, Super Micro beats guidance",
+      "links": [
+        {
+          "label": "Startup Fortune",
+          "url": "https://startupfortune.com/fireworks-ai-is-in-talks-to-double-its-valuation-to-40-billion-dollars/"
+        },
+        {
+          "label": "AI Weekly (Super Micro)",
+          "url": "https://aiweekly.co/alerts/super-micro-preannounces-185b195b-fiscal-q1-beating-guidance-by-4b-on-ai-server"
+        }
+      ],
+      "source": "Startup Fortune · AI Weekly",
+      "top": false,
+      "why": "Inference prices are falling, but the companies selling inference are not getting cheaper. Those dynamics shape your API costs."
+    }
+  ],
+  "watch": [
+    {
+      "link": {
+        "label": "Nvidia",
+        "url": "https://blogs.nvidia.com/gtc-berlin-2026-news/"
+      },
+      "text": "The keynote starts at 11:00 CEST on 21 October. Watch for industrial AI and Omniverse news, automotive partners, and anything on Sweden's Sferical One supercomputer, where SKF is a strategic partner.",
+      "title": "Jensen Huang's GTC Berlin keynote today"
+    },
+    {
+      "link": {
+        "label": "Notion",
+        "url": "https://www.notion.com/blog/notion-ai-more-for-less"
+      },
+      "text": "Existing customers move to the new credit model on 2 November. Watch how heavy users react. It will test whether router-based pricing feels fair.",
+      "title": "Notion credits switch on 2 November"
+    },
+    {
+      "link": {
+        "label": "TechCrunch",
+        "url": "https://techcrunch.com/2026/10/20/spacex-and-tesla-boards-form-special-committees-to-review-merger/"
+      },
+      "text": "Both boards have set up independent committees to evaluate a merger, with Musk recusing himself. He cites AI software, Optimus robots and chip plans as synergies. This is early stage, with no terms yet.",
+      "title": "Tesla–SpaceX merger review"
+    }
+  ],
+  "weekday": "Wednesday"
+}

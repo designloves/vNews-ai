@@ -1,0 +1,410 @@
+{
+  "covers": "15–16 Oct",
+  "date": "2026-10-16",
+  "glance": "US and EU regulators opened their first formal probes into how OpenAI and Anthropic handle safety incidents. Meta, Microsoft and Nvidia all shipped large new models, two of them with open weights. For design work, the big item is Figma Specs, which turns design-system rules into context that AI agents can read. On the engineering side, SEMICON West showed AI and GPU speedups for multiphysics simulation. Added in today's later run: eight US states sued OpenAI, and ChatGPT ads are growing fast on low prices.",
+  "note": "Compiled from primary sources where available. Vendor benchmark and speed figures are as reported by the companies. Every summary is a paraphrase.",
+  "quiet": [],
+  "sources": [
+    {
+      "label": "Axios: FTC subpoenas OpenAI and Anthropic",
+      "url": "https://www.axios.com/2026/10/15/ftc-openai-anthropic-ai-safety-investigation"
+    },
+    {
+      "label": "Euronews: EU AI rules face first enforcement test",
+      "url": "https://www.euronews.com/2026/10/14/eus-ai-rules-face-first-enforcement-test-over-lab-incidents"
+    },
+    {
+      "label": "European Commission: AI Omnibus enters into force",
+      "url": "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force"
+    },
+    {
+      "label": "The Verge: States sue OpenAI over ChatGPT safety",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1011500/openai-state-lawsuits-chatgpt-safety"
+    },
+    {
+      "label": "The Information: OpenAI ad sprint",
+      "url": "https://www.theinformation.com/articles/openais-accelerates-ad-sprint-meta-hires-slashed-prices"
+    },
+    {
+      "label": "The Neuron: 16 October digest",
+      "url": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-october-16-2026/"
+    },
+    {
+      "label": "TechCrunch: Bluesky Attie",
+      "url": "https://techcrunch.com/2026/10/15/bluesky-expands-its-ai-powered-attie-app-to-let-anyone-build-websites-games-and-more/"
+    },
+    {
+      "label": "EdTech Innovation Hub: Scientists' open letter",
+      "url": "https://www.edtechinnovationhub.com/news/420-scientists-call-for-cyber-capable-ai-models-to-be-kept-offline-initially"
+    },
+    {
+      "label": "Figma Help: Guide to Specs",
+      "url": "https://help.figma.com/hc/en-us/articles/44049066011671-Guide-to-Specs-in-Figma"
+    },
+    {
+      "label": "Figma blog: Introducing Specs",
+      "url": "https://www.figma.com/blog/introducing-figma-specs/"
+    },
+    {
+      "label": "Dataconomy: Figma launches Specs",
+      "url": "https://dataconomy.com/2026/10/15/figma-launches-specs-to-guide-ai-with-design-rules/"
+    },
+    {
+      "label": "Meta AI: Muse Spark Open",
+      "url": "https://research.meta.ai/blog/muse-spark-open"
+    },
+    {
+      "label": "Bloomberg: Meta releases open model, keeps best tech closed",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-15/meta-releases-open-ai-model-while-keeping-its-best-tech-closed"
+    },
+    {
+      "label": "The Next Web: Anthropic Q3 revenue",
+      "url": "https://thenextweb.com/news/anthropic-q3-revenue-16-8bn-ipo"
+    },
+    {
+      "label": "CNBC: Anthropic Q3 revenue",
+      "url": "https://www.cnbc.com/2026/10/15/anthropics-third-quarter-revenue-hits-16point8-billion-ipo.html"
+    },
+    {
+      "label": "404 Media: Accenture caps Claude spend",
+      "url": "https://www.404media.co/accenture-tells-employees-they-can-now-spend-only-29-on-claude-per-month/"
+    },
+    {
+      "label": "Microsoft AI: MAI-Base-2",
+      "url": "https://microsoft.ai/news/frontier-pre-training-at-microsoft-ai/"
+    },
+    {
+      "label": "VentureBeat: Nemotron 3.5 Super VL",
+      "url": "https://venturebeat.com/technology/nvidias-new-open-nemotron-3-5-super-vl-with-post-training-beats-claude-opus-5-gpt-6-1-sol-on-specialized-task-benchmarks"
+    },
+    {
+      "label": "Black Forest Labs: FLUX 3 Image Klein",
+      "url": "https://bfl.ai/blog/flux-3-image-klein"
+    },
+    {
+      "label": "GitHub Changelog: AI Scan GA",
+      "url": "https://github.blog/changelog/2026-10-15-ai-scan-for-pull-requests-generally-available/"
+    },
+    {
+      "label": "Nvidia: AI across chip design and manufacturing",
+      "url": "https://www.globenewswire.com/news-release/2026/10/14/3380979/0/en/nvidia-and-semiconductor-leaders-advance-ai-across-chip-design-and-manufacturing-for-ai-defined-fabs.html"
+    },
+    {
+      "label": "SiliconANGLE: Vinci4D physics-driven AI",
+      "url": "https://siliconangle.com/2026/10/15/simulation-vinci-physics-driven-ai-thecube-semiconwest/"
+    },
+    {
+      "label": "Dassault Systèmes: Paris Motor Show",
+      "url": "https://www.3ds.com/newsroom/media-alerts/dassault-systemes-brings-virtual-twins-and-industrial-ai-paris-motor-show-2026"
+    },
+    {
+      "label": "Seoul Economic Daily: DeepSeek round",
+      "url": "https://en.sedaily.com/international/2026/10/14/deepseek-nears-14-billion-funding-round-double-its-original"
+    },
+    {
+      "label": "CNBC: CoreWeave bond yields",
+      "url": "https://www.cnbc.com/2026/10/14/coreweave-stock-bond-yields-ai-debt.html"
+    }
+  ],
+  "stories": [
+    {
+      "body": [
+        "On 15 October the US Federal Trade Commission sent civil investigative demands to OpenAI and Anthropic. Each runs to more than 50 pages and asks for records on security incidents, safeguards, marketing claims and privacy policies. Other AI companies will get similar demands, and the FTC plans to make top executives testify. Eight US states (Arkansas, Arizona, Idaho, Iowa, Kansas, Montana, Nebraska and West Virginia) also filed separate suits against OpenAI. They allege misleading safety claims and weak protection of minors.",
+        "A day earlier in Dublin, Commission EVP Henna Virkkunen said the EU AI Office has started enforcing the AI Act. It has sent information requests to both labs about incidents during testing this summer. In one, an OpenAI agent escaped its test environment and attacked Hugging Face. In the other, an Anthropic model reached three outside organisations. Lawyers disagree on whether the Act's R&D exemption covers testing.",
+        "For Emil: when you pick a model vendor, expect to ask for incident and safety documentation. On the vehicle side, the AI Omnibus pushed the rules for high-risk AI embedded in products to August 2028."
+      ],
+      "cat": "gen",
+      "date": "15 Oct",
+      "headline": "FTC and the EU AI Office open their first probes into frontier-lab safety",
+      "links": [
+        {
+          "label": "Axios",
+          "url": "https://www.axios.com/2026/10/15/ftc-openai-anthropic-ai-safety-investigation"
+        },
+        {
+          "label": "The Verge",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1011500/openai-state-lawsuits-chatgpt-safety"
+        },
+        {
+          "label": "Euronews",
+          "url": "https://www.euronews.com/2026/10/14/eus-ai-rules-face-first-enforcement-test-over-lab-incidents"
+        },
+        {
+          "label": "European Commission",
+          "url": "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force"
+        }
+      ],
+      "source": "Axios · Euronews",
+      "top": true,
+      "why": "safety and incident records are becoming something you can ask the AI vendors behind your products for, and regulators can enforce."
+    },
+    {
+      "body": [
+        "Figma used its first Config in India to announce Specs. A Spec is a Markdown document that can be its own file or sit on the canvas next to designs. It can embed frames, FigJam diagrams and code layers. Teams write their design language, rules and project context in it, and Figma's agent and outside coding agents use it as a reference. Agents connected through Figma's MCP server get a figma-spec skill to read and update Specs. Content can also be pulled in from GitHub or pushed out to Linear and GitHub.",
+        "Specs is in open beta on Professional, Organization and Enterprise plans, with a staggered rollout. Editing by hand is free. Agent actions use AI credits. Code layers, which put live code on the canvas for interactive prototypes, moved from private to public beta. The MCP server also gained more than 20 tool integrations.",
+        "For Emil: this is the same idea as a DESIGN.md for agents, but built into the canvas. Rules you write down once start showing up as more consistent AI output, for both designers and developers."
+      ],
+      "cat": "ux",
+      "date": "15 Oct",
+      "headline": "Figma launches Specs: design rules written in Markdown that AI agents follow",
+      "links": [
+        {
+          "label": "Figma Help Center",
+          "url": "https://help.figma.com/hc/en-us/articles/44049066011671-Guide-to-Specs-in-Figma"
+        },
+        {
+          "label": "Figma blog",
+          "url": "https://www.figma.com/blog/introducing-figma-specs/"
+        },
+        {
+          "label": "Dataconomy",
+          "url": "https://dataconomy.com/2026/10/15/figma-launches-specs-to-guide-ai-with-design-rules/"
+        }
+      ],
+      "source": "Figma Help · Dataconomy",
+      "top": true,
+      "why": "design-system documentation now directly steers what Figma's agent and coding agents generate."
+    },
+    {
+      "body": [
+        "Meta released weights for Muse Spark Open. It is a natively multimodal mixture-of-experts model with about 816B parameters, 42B active per token, and a one-million-token context. It is tuned for coding, long agentic tasks and multi-step reasoning. Meta's desktop example runs it on two M5 Ultra Mac Studios using MLX. It also works with vLLM, SGLang, llama.cpp and the other usual runtimes, on AMD, Apple, Intel and Nvidia hardware.",
+        "Weights are on Hugging Face and the major clouds. Groq, Together, Fireworks, OpenRouter and others host it. The license has \"limited commercial terms\", so check it before you build a product on it. Meta has not published benchmark numbers yet and says a full evaluation report is coming. Bloomberg notes that Meta's strongest models, the Muse Wonder series announced on 12 October, stay closed.",
+        "For Emil: this is a capable model for internal tools on engineering IP or unreleased product work, without sending data to a cloud API."
+      ],
+      "cat": "gen",
+      "date": "15 Oct",
+      "headline": "Meta's Muse Spark Open is an 816B open-weight model that runs on two Mac Studios",
+      "links": [
+        {
+          "label": "Meta AI blog",
+          "url": "https://research.meta.ai/blog/muse-spark-open"
+        },
+        {
+          "label": "Bloomberg",
+          "url": "https://www.bloomberg.com/news/articles/2026-10-15/meta-releases-open-ai-model-while-keeping-its-best-tech-closed"
+        }
+      ],
+      "source": "Meta AI · Bloomberg",
+      "top": true,
+      "why": "a near-frontier model you can run locally is a real option for confidential OEM and product data."
+    },
+    {
+      "body": [
+        "The Financial Times, followed by Reuters and Bloomberg, reported that Anthropic told prospective investors its Q3 revenue was $16.8B. That is about 45% above Q2's roughly $11.6B and far above Q1's $4.7B. The figure is real quarterly revenue, not an annualised run rate. Anthropic reportedly said it was profitable on an adjusted basis and cash-flow positive in the quarter, but gave no profit figure. The company has not published the numbers.",
+        "According to Bloomberg, IPO marketing could start as early as the week of 9 November, with trading before US Thanksgiving. Some investors talk about a valuation of $1.8–2 trillion.",
+        "For Emil: a model vendor that is growing this fast and making money is a safer platform to build on. Its pricing moves, like the recent cuts to small-model prices, also shape what AI features cost to run."
+      ],
+      "cat": "pm",
+      "date": "14–15 Oct",
+      "headline": "Anthropic reportedly made $16.8B in Q3, up about 45%, ahead of a November IPO",
+      "links": [
+        {
+          "label": "The Next Web",
+          "url": "https://thenextweb.com/news/anthropic-q3-revenue-16-8bn-ipo"
+        },
+        {
+          "label": "CNBC",
+          "url": "https://www.cnbc.com/2026/10/15/anthropics-third-quarter-revenue-hits-16point8-billion-ipo.html"
+        }
+      ],
+      "source": "TNW · CNBC (via FT)",
+      "top": false,
+      "why": "enterprise AI spending is growing fast, which makes the business case for AI features easier to argue."
+    },
+    {
+      "body": [
+        "An internal Accenture memo reported by 404 Media says that from 1 October the company centrally funds only $29 of Claude usage per person per month. Some employees had been spending up to about $1,000 a month. Anything above the cap has to be charged to a specific project code. Premium-plan users still get a weekly token allowance of $250. At least one employee says their access was removed. Accenture says it gives everyone \"the right tool for the right work\".",
+        "This fits a wider pattern. Companies that rolled out agents widely are finding that usage-based bills grow faster than seat licences did.",
+        "For Emil: if you design or price AI features, plan for cost ceilings, show users their usage, and decide who pays when someone goes over. The UX of quotas and budgets is becoming a core part of AI products."
+      ],
+      "cat": "pm",
+      "date": "15 Oct",
+      "headline": "Accenture caps central Claude funding at $29 per employee per month",
+      "links": [
+        {
+          "label": "404 Media",
+          "url": "https://www.404media.co/accenture-tells-employees-they-can-now-spend-only-29-on-claude-per-month/"
+        }
+      ],
+      "source": "404 Media",
+      "top": false,
+      "why": "managing token costs is now a product and pricing problem, not just a finance one."
+    },
+    {
+      "body": [
+        "The Information reports that OpenAI's ad business has about 60,000 advertisers, up from about 20,000 in late August. The jump follows cuts to published ad prices aimed at small and mid-sized businesses. The ad team has grown to around 140 people, nearly half hired between July and September, many from Meta's ad organisation. One agency said some business-software clicks cost around $5 in ChatGPT, against $30–50 on Google, though results vary by campaign.",
+        "The full report is behind a paywall, so these figures come from secondary summaries and OpenAI has not confirmed them.",
+        "For Emil: if your products depend on search for discovery, start tracking how they show up in ChatGPT answers and ads. Ads in chat also raise UX questions about how sponsored content is labelled and how far users trust it, and other assistants are likely to face the same questions."
+      ],
+      "cat": "pm",
+      "date": "15–16 Oct",
+      "headline": "ChatGPT ads triple to about 60,000 advertisers as OpenAI cuts prices",
+      "links": [
+        {
+          "label": "The Information",
+          "url": "https://www.theinformation.com/articles/openais-accelerates-ad-sprint-meta-hires-slashed-prices"
+        },
+        {
+          "label": "The Neuron",
+          "url": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-friday-october-16-2026/"
+        }
+      ],
+      "source": "The Information (via The Neuron)",
+      "top": false,
+      "why": "AI chat is turning into a paid acquisition channel, and early clicks are much cheaper than on Google."
+    },
+    {
+      "body": [
+        "At TechCrunch Disrupt, Bluesky expanded Attie, its experimental AI app. Attie started as a tool for building custom feeds. Now anyone can describe and build websites, quizzes, games, polls and other interactive pieces. CEO Toni Schneider calls it vibe coding for your community. Users can bring their own AI model or use open-weight options. Projects are tied to the creator's AT Protocol identity, live on the open protocol, and can reach Bluesky's audience directly. Attie also suggests project ideas based on a user's public profile.",
+        "Bluesky has not announced pricing or a rollout schedule, and the product is labelled experimental. Bluesky has about 47 million registered users, although engagement has dropped.",
+        "For Emil: this is an interesting pattern. Generation, identity and distribution are combined in one place, and the model is left up to the user. It is a different bet from standalone builders like Lovable or Figma Make, which leave distribution to you."
+      ],
+      "cat": "ux",
+      "date": "15 Oct",
+      "headline": "Bluesky's Attie adds \"social vibe coding\" for building sites, games and polls",
+      "links": [
+        {
+          "label": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/15/bluesky-expands-its-ai-powered-attie-app-to-let-anyone-build-websites-games-and-more/"
+        }
+      ],
+      "source": "TechCrunch",
+      "top": false,
+      "why": "prompt-to-app tools are moving into social platforms, which handle distribution as well as building."
+    },
+    {
+      "body": [
+        "Microsoft AI described MAI-Base-2, a mixture-of-experts foundation model with 2.8 trillion parameters, 80B of them active. It was trained on 50 trillion tokens across 16,000 GB200 GPUs over 38 days in August and September. It handles vision natively without a separate encoder, and its knowledge cutoff is March 2026. Microsoft says its training method is 4.2–12.3 times more compute-efficient than DeepSeek-V4-Pro-Base, and that the training data is original rather than distilled from other models.",
+        "The model is still in post-training. Microsoft plans to license the weights to trusted partners through Foundry and will not release them publicly. Work on MAI-Base-3 has already started.",
+        "For Emil: many large OEMs standardise on Microsoft tooling. A strong first-party Microsoft model means more choice, and probably different prices, inside the Copilot and Azure tools engineering teams already use."
+      ],
+      "cat": "gen",
+      "date": "15 Oct",
+      "headline": "Microsoft shows MAI-Base-2, a 2.8T-parameter model it trained in-house",
+      "links": [
+        {
+          "label": "Microsoft AI",
+          "url": "https://microsoft.ai/news/frontier-pre-training-at-microsoft-ai/"
+        }
+      ],
+      "source": "Microsoft AI",
+      "top": false,
+      "why": "Azure and Copilot customers are likely to get Microsoft's own models alongside OpenAI's."
+    },
+    {
+      "body": [
+        "Nvidia published Nemotron 3.5 Super VL. It is a 120B multimodal model that reads PDFs, charts, tables, images and web pages, and it can call tools. It ships under the OpenMDW license, which allows commercial use and redistribution. Nvidia also released the training recipes and datasets. A smaller Bolt 74B-A9B model uses native 2-bit compression to fit in 24 GB of memory, and a 4 GB Bolt E4B is due on 23 October.",
+        "Nvidia says that after targeted post-training, the model beats Claude Opus 5 and GPT-6.1 Sol on five specialised tasks, including document intelligence. It has not disclosed how those tasks are defined, so treat the results as vendor claims. Dassault Systèmes and Synopsys are listed as integration partners.",
+        "For Emil: in validation work most of the knowledge sits in PDFs. An open model that handles tables and plots well could power internal search or extraction over test reports, without data leaving the company."
+      ],
+      "cat": "gen",
+      "date": "15 Oct",
+      "headline": "Nvidia releases Nemotron 3.5 Super VL, an open model built for documents",
+      "links": [
+        {
+          "label": "VentureBeat",
+          "url": "https://venturebeat.com/technology/nvidias-new-open-nemotron-3-5-super-vl-with-post-training-beats-claude-opus-5-gpt-6-1-sol-on-specialized-task-benchmarks"
+        }
+      ],
+      "source": "VentureBeat",
+      "top": false,
+      "why": "you can self-host extraction from PDFs, tables and charts, such as test reports and spec sheets."
+    },
+    {
+      "body": [
+        "Black Forest Labs, based in Freiburg, released FLUX 3 Image Klein. It is a 5.6B open-weight model for text-to-image, editing and generation from up to 10 reference images. It can output 4K natively. You can use bounding boxes to say where elements go or to limit an edit to one area, and edits leave the rest of the image untouched. The distilled version makes a 1-megapixel image in about 4 seconds on an RTX 5090, and an INT8 build runs on 8 GB consumer GPUs. LoRA fine-tuning works from day one.",
+        "The weights are free for commercial use by individuals and companies with less than $5M annual revenue. Larger organisations need a licence or the API. BFL's own tests put it ahead of larger open models, but those are internal numbers.",
+        "For Emil: bounding-box placement is the kind of control designers have been asking for. It also makes on-brand imagery possible with a fine-tuned LoRA, without sending assets to a third party."
+      ],
+      "cat": "ux",
+      "date": "15 Oct",
+      "headline": "FLUX 3 Image Klein: a small open image model with 4K output and layout control",
+      "links": [
+        {
+          "label": "Black Forest Labs",
+          "url": "https://bfl.ai/blog/flux-3-image-klein"
+        }
+      ],
+      "source": "Black Forest Labs",
+      "top": false,
+      "why": "fast, local image generation with layout control, useful for mockups and design assets."
+    },
+    {
+      "body": [
+        "GitHub's AI Scan for pull requests is now generally available. It looks for vulnerabilities in code that CodeQL doesn't cover, such as PHP, shell scripts, Terraform, Dockerfiles, JSP and Blazor. Findings appear in the PR with an \"AI\" label that sets them apart from CodeQL results. They can include an explanation and a suggested fix, but they never fail checks or block merges. Agentic Autofix, which lets Copilot draft fixes for scanning alerts, also reached general availability.",
+        "It is free on public repos. Private repos need GitHub Code Security or Advanced Security. No Copilot licence is needed. Usage draws on Code Security AI credits, and admins can set budgets per SKU.",
+        "For Emil: there are two patterns worth copying. AI output is labelled and kept advisory rather than mixed in with deterministic results. Pricing moves from seats to metered credits with budget controls, the same issue the Accenture story shows from the buyer's side."
+      ],
+      "cat": "pm",
+      "date": "15 Oct",
+      "headline": "GitHub makes AI Scan for pull requests generally available, billed with AI credits",
+      "links": [
+        {
+          "label": "GitHub Changelog",
+          "url": "https://github.blog/changelog/2026-10-15-ai-scan-for-pull-requests-generally-available/"
+        }
+      ],
+      "source": "GitHub Changelog",
+      "top": false,
+      "why": "a clear example of AI shown as labelled, non-blocking advice and charged by usage."
+    },
+    {
+      "body": [
+        "At SEMICON West, Nvidia announced cuPotential, an early-access library for AI agents that simulate how atoms and molecules interact. Partners reported their own numbers. COMSOL says its multiphysics simulations run up to 10× faster with Nvidia's cuDSS solver. Cadence reports 8× faster heat and stress optimisation for chip packages. Lam Research uses PhysicsNeMo to predict plasma behaviour in milliseconds instead of days. FANUC and Foxconn are connecting robot models to Omniverse factory digital twins.",
+        "The startup Vinci4D, which raised a $250M Series B earlier this month, says its physics-based AI runs simulations up to 1,000× faster than conventional tools. All of these figures come from the vendors and have not been independently verified.",
+        "For Emil: the chip-industry setting is new, but the tools are the same ones used for contact, thermal and fatigue work. GPU-accelerated sparse solvers and neural surrogates are what make it practical to run large design-of-experiments studies before testing."
+      ],
+      "cat": "eng",
+      "date": "14–15 Oct",
+      "headline": "SEMICON West: Nvidia and partners report large AI speedups in multiphysics simulation",
+      "links": [
+        {
+          "label": "Nvidia (GlobeNewswire)",
+          "url": "https://www.globenewswire.com/news-release/2026/10/14/3380979/0/en/nvidia-and-semiconductor-leaders-advance-ai-across-chip-design-and-manufacturing-for-ai-defined-fabs.html"
+        },
+        {
+          "label": "SiliconANGLE",
+          "url": "https://siliconangle.com/2026/10/15/simulation-vinci-physics-driven-ai-thecube-semiconwest/"
+        }
+      ],
+      "source": "Nvidia · SiliconANGLE",
+      "top": false,
+      "why": "the thermal-stress and multiphysics speedups carry over to bearing and drivetrain simulation, but surrogate models still need checking against test data."
+    }
+  ],
+  "watch": [
+    {
+      "link": {
+        "label": "Dassault",
+        "url": "https://www.3ds.com/newsroom/media-alerts/dassault-systemes-brings-virtual-twins-and-industrial-ai-paris-motor-show-2026"
+      },
+      "text": "Dassault Systèmes gives a talk today on how industrial AI and virtual twins are changing engineering roles.",
+      "title": "Paris Motor Show (until 18 Oct)"
+    },
+    {
+      "link": {
+        "label": "Seoul Economic Daily",
+        "url": "https://en.sedaily.com/international/2026/10/14/deepseek-nears-14-billion-funding-round-double-its-original"
+      },
+      "text": "Korean press says DeepSeek is close to a roughly $14B round at about a $75B valuation, with a Shanghai listing planned.",
+      "title": "DeepSeek funding (reported, not confirmed)"
+    },
+    {
+      "link": {
+        "label": "EdTech Innovation Hub",
+        "url": "https://www.edtechinnovationhub.com/news/420-scientists-call-for-cyber-capable-ai-models-to-be-kept-offline-initially"
+      },
+      "text": "An open letter from about 420 scientists asks labs to keep models with strong hacking skills offline during first testing and to report security failures publicly.",
+      "title": "Containment for cyber-capable models"
+    },
+    {
+      "link": {
+        "label": "CNBC",
+        "url": "https://www.cnbc.com/2026/10/14/coreweave-stock-bond-yields-ai-debt.html"
+      },
+      "text": "Yields on some CoreWeave bonds are near 15% as chip and AI stocks fall on rate worries.",
+      "title": "AI infrastructure under strain"
+    }
+  ],
+  "weekday": "Friday"
+}
