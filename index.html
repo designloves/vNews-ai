@@ -342,7 +342,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
      The sheet is a chain of vertical strips; each strip is rotated a little more than the one before it,
      so the page curls with its free edge leading, and each strip is lit according to its own angle. */
   var REDUCE=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var DEFAULTS={duration:900,curl:45,roll:30,strips:12,shadow:0.75,shading:0.6,gloss:0.35,lift:30,persp:1600,threshold:0.33};
+  var DEFAULTS={duration:370,curl:49,roll:86,strips:24,shadow:1,shading:1,gloss:0.21,lift:92,persp:1300,threshold:0.34};
   var CFG={};
   (function(){var saved={};try{saved=JSON.parse(localStorage.getItem("vn-turn")||"{}")||{};}catch(_){}
     for(var k in DEFAULTS)CFG[k]=typeof saved[k]==="number"?saved[k]:DEFAULTS[k];})();
