@@ -115,27 +115,25 @@ details[open] .more .o, details:not([open]) .more .c{display:none}
 .empty p{margin:0;max-width:40ch;color:var(--ink-2)}
 /* Read-aloud bar */
 /* Floating Listen button */
-.fab-wrap{position:fixed;z-index:40;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:max(16px,env(safe-area-inset-right,0px));
-  display:flex;align-items:center;gap:10px}
-.fab-wrap.left{right:auto;left:max(16px,env(safe-area-inset-left,0px))}
-.fab-wrap.left .fab{order:-1}
-.fab{width:58px;height:58px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);display:grid;place-items:center;cursor:pointer;
-  box-shadow:0 6px 18px rgba(0,0,0,.28),0 1px 3px rgba(0,0,0,.2);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+.fab-wrap{position:fixed;z-index:40;left:16px;bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  display:flex;flex-direction:column;align-items:center;gap:12px;width:66px}
+.fab{width:66px;height:66px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);display:grid;place-items:center;cursor:pointer;
+  box-shadow:0 8px 22px rgba(0,0,0,.3),0 1px 3px rgba(0,0,0,.2);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
   transition:transform .18s ease,box-shadow .18s ease}
 .fab:active{transform:scale(.95)}
 .fab-wrap.dragging .fab{transform:scale(1.12);box-shadow:0 14px 34px rgba(0,0,0,.35)}
-.fab-mini{display:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink);
-  place-items:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.18);animation:fabIn .2s ease-out}
+.fab-mini{display:none;width:50px;height:50px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink);
+  place-items:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.18);animation:fabIn .2s ease-out;padding:0}
 .fab-mini:disabled{opacity:.4;cursor:default}
 .fab-wrap.playing .fab-mini{display:grid}
-@keyframes fabIn{from{transform:scale(.6);opacity:0}}
+@keyframes fabIn{from{transform:translateY(12px) scale(.6);opacity:0}}
 @media (prefers-reduced-motion: reduce){.fab-mini{animation:none}.fab{transition:none}}
 /* Section heads stay pinned while you read through their section */
 .sec-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper)}
 .sec-head::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:env(safe-area-inset-top,0px);background:var(--paper)}
 /* Newspaper section heads: heavy rule, section name on the left, an optional control on the right */
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 6px;padding-top:10px;
-  border-top:3px solid var(--ink);border-bottom:1px solid var(--rule);padding-bottom:10px}
+  border-top:3px solid var(--ink);padding-bottom:10px}
 .sec-title{margin:0;font-family:var(--f-serif);font-weight:700;font-size:21px;line-height:1.2;color:var(--ink)}
 .sec-meta{font-family:var(--f-label);font-size:14px;color:var(--ink-2)}
 .sec-head.toggle{cursor:pointer}
@@ -309,19 +307,40 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     fab.wrap.classList.toggle("playing",on);
     fab.main.innerHTML=on?ICON.stop:ICON.play;
     fab.main.setAttribute("aria-label",on?"Stop reading":"Listen to the brief"+(fab.mins?" (about "+fab.mins+" min)":""));
-    fab.back.disabled=!on||P.i<=0;fab.fwd.disabled=!on;
+    fab.back.disabled=!on;fab.fwd.disabled=!on;
   }
-  function speakFrom(i){
+  /* Position is tracked in words: the chunk being spoken, the word it started from, and how far the voice has got
+     (from word-boundary events, or from elapsed time where the voice does not report them). Skipping 5 seconds
+     moves about 13 words, which is how much a voice says in 5 seconds at normal speed. */
+  var WPS=160/60;
+  function words(i){var it=P.items[i];if(!it)return [];if(!it.w)it.w=it.text.split(" ");return it.w;}
+  function speakFrom(i,off){
     var t=++P.token;synth.cancel();
     if(i>=P.items.length){finish();return;}
-    P.i=Math.max(0,i);P.state="playing";updateUI();
-    var it=P.items[P.i];
-    var u=new SpeechSynthesisUtterance(it.text);
+    P.i=Math.max(0,i);off=Math.max(0,off||0);P.off=off;P.said=0;P.t0=performance.now();P.bound=false;
+    P.state="playing";updateUI();
+    var text=words(P.i).slice(off).join(" ");
+    var u=new SpeechSynthesisUtterance(text);
     if(voice){u.voice=voice;u.lang=voice.lang;}else u.lang="en-GB";
     u.rate=1;u.pitch=1;
-    u.onend=function(){if(t===P.token)speakFrom(P.i+1);};
-    u.onerror=function(e){if(t!==P.token)return;if(e&&(e.error==="interrupted"||e.error==="canceled"))return;speakFrom(P.i+1);};
+    u.onstart=function(){if(t===P.token)P.t0=performance.now();};
+    u.onboundary=function(e){if(t!==P.token||(e.name&&e.name!=="word"))return;P.bound=true;
+      P.said=text.slice(0,e.charIndex).split(" ").filter(Boolean).length;};
+    u.onend=function(){if(t===P.token)speakFrom(P.i+1,0);};
+    u.onerror=function(e){if(t!==P.token)return;if(e&&(e.error==="interrupted"||e.error==="canceled"))return;speakFrom(P.i+1,0);};
     synth.speak(u);
+  }
+  function position(){
+    var n=0;for(var k=0;k<P.i;k++)n+=words(k).length;
+    var said=P.bound?P.said:Math.floor((performance.now()-P.t0)/1000*WPS);
+    return n+P.off+Math.min(said,Math.max(0,words(P.i).length-P.off-1));
+  }
+  function seekWords(delta){
+    if(P.state!=="playing")return;
+    var total=0;for(var k=0;k<P.items.length;k++)total+=words(k).length;
+    var target=Math.max(0,Math.min(total-1,position()+delta));
+    for(k=0;k<P.items.length;k++){var n=words(k).length;if(target<n){speakFrom(k,target);return;}target-=n;}
+    finish();
   }
   function finish(){P.token++;P.state="idle";P.i=0;updateUI();}
   function stopReading(){if(!canSpeak)return;P.token++;synth.cancel();finish();}
@@ -332,10 +351,11 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
      Tap to play the current edition's brief; while playing it becomes Stop, with Back/Forward beside it
      (each skips about a sentence). Press and hold, then drag sideways, to move it to the other corner. */
   var ICON={
-    play:'<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>',
-    stop:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="1.5" fill="currentColor"/></svg>',
-    back:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M11.5 6v12L3 12zM21 6v12l-8.5-6z" fill="currentColor"/></svg>',
-    fwd:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12.5 6v12L21 12zM3 6v12l8.5-6z" fill="currentColor"/></svg>'
+    play:'<svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path d="M8 4.8v14.4c0 .8.9 1.3 1.6.9l11.3-7.2c.6-.4.6-1.3 0-1.7L9.6 3.9C8.9 3.5 8 4 8 4.8z" fill="currentColor"/></svg>',
+    stop:'<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2.5" fill="currentColor"/></svg>',
+    // Circular arrow with the number of seconds inside, as on podcast players.
+    back:'<svg viewBox="0 0 32 32" width="36" height="36" aria-hidden="true"><path d="M9.2 8.6A11 11 0 1 1 5.2 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M4.6 4.8v6.6h6.6z" fill="currentColor" transform="rotate(-12 8 8)"/><text x="16.6" y="22.6" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-weight="700" font-size="13.5" fill="currentColor">5</text></svg>',
+    fwd:'<svg viewBox="0 0 32 32" width="36" height="36" aria-hidden="true"><path d="M22.8 8.6A11 11 0 1 0 26.8 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M27.4 4.8v6.6h-6.6z" fill="currentColor" transform="rotate(12 24 8)"/><text x="15.4" y="22.6" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif" font-weight="700" font-size="13.5" fill="currentColor">5</text></svg>'
   };
   var fab=null;
   function currentItems(){
@@ -344,24 +364,26 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     st.sort(function(a,b){return (b.top?1:0)-(a.top?1:0);});
     return script(dates[idx],x,st);
   }
-  function refreshFab(){if(!fab)return;var it=currentItems();fab.mins=it.length?minutes(it):0;fab.wrap.hidden=!it.length;updateUI();}
+  function refreshFab(){if(!fab)return;var it=currentItems();fab.mins=it.length?minutes(it):0;fab.wrap.hidden=!it.length;if(fab.place)fab.place();updateUI();}
   (function(){
     if(!canSpeak)return;
     var wrap=el("div","fab-wrap"),back=el("button","fab-mini"),fwd=el("button","fab-mini"),main=el("button","fab");
     back.type=fwd.type=main.type="button";back.innerHTML=ICON.back;fwd.innerHTML=ICON.fwd;
-    back.setAttribute("aria-label","Back a sentence");fwd.setAttribute("aria-label","Forward a sentence");
-    wrap.appendChild(back);wrap.appendChild(fwd);wrap.appendChild(main);wrap.hidden=true;
-    var side="right";try{side=localStorage.getItem("vn-fab")==="left"?"left":"right";}catch(_){}
-    wrap.classList.toggle("left",side==="left");
-    document.body.appendChild(wrap);
-    fab={wrap:wrap,main:main,back:back,fwd:fwd,mins:0};
-    back.addEventListener("click",function(){if(P.state==="playing")speakFrom(P.i-1);});
-    fwd.addEventListener("click",function(){if(P.state==="playing")speakFrom(P.i+1);});
+    back.setAttribute("aria-label","Back 5 seconds");fwd.setAttribute("aria-label","Forward 5 seconds");
+    wrap.appendChild(fwd);wrap.appendChild(back);wrap.appendChild(main);wrap.hidden=true;
+    // Horizontal position along the bottom edge, 0 = far left, 1 = far right; kept between visits.
+    var pos=1;try{var sv=parseFloat(localStorage.getItem("vn-fab-x"));if(sv>=0&&sv<=1)pos=sv;}catch(_){}
+    function place(){var m=16,w=wrap.offsetWidth||64,room=Math.max(0,window.innerWidth-2*m-w);wrap.style.left=(m+room*pos)+"px";}
+    window.addEventListener("resize",place);
+    document.body.appendChild(wrap);place();
+    fab={wrap:wrap,main:main,back:back,fwd:fwd,mins:0,place:place};
+    back.addEventListener("click",function(){seekWords(-Math.round(5*WPS));});
+    fwd.addEventListener("click",function(){seekWords(Math.round(5*WPS));});
     var dragged=false;
     main.addEventListener("click",function(){
       if(dragged){dragged=false;return;}
       if(P.state==="playing"){stopReading();return;}
-      P.items=currentItems();P.i=0;if(P.items.length)speakFrom(0);
+      P.items=currentItems();P.i=0;if(P.items.length)speakFrom(0,0);
     });
     // Press and hold (about a third of a second), then drag along the bottom edge; it snaps to the nearer side.
     var hold=0,drag=null;
@@ -378,24 +400,18 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
       if(!drag)return;
       if(!drag.on){if(Math.abs(e.clientX-drag.sx)>8||Math.abs(e.clientY-drag.sy)>8){clearTimeout(hold);drag=null;}return;}
       e.preventDefault();
-      var dx=e.clientX-drag.sx,min=8-drag.base.left,max=window.innerWidth-8-drag.base.right;
+      var dx=e.clientX-drag.sx,min=16-drag.base.left,max=window.innerWidth-16-drag.base.right;
       wrap.style.transform="translateX("+Math.max(min,Math.min(max,dx))+"px)";
     });
     function endDrag(e){
       clearTimeout(hold);if(!drag)return;var d=drag;drag=null;
       if(!d.on)return;
       dragged=true;setTimeout(function(){dragged=false;},400);
-      var before=wrap.getBoundingClientRect().left;
-      var left=e&&typeof e.clientX==="number"?e.clientX<window.innerWidth/2:wrap.classList.contains("left");
-      wrap.classList.remove("dragging");wrap.style.transition="none";wrap.style.transform="";
-      wrap.classList.toggle("left",left);
-      try{localStorage.setItem("vn-fab",left?"left":"right");}catch(_){}
-      // Glide from where it was dropped into its new corner.
-      var after=wrap.getBoundingClientRect().left;
-      wrap.style.transform="translateX("+(before-after)+"px)";
-      void wrap.offsetWidth;
-      wrap.style.transition="transform .28s cubic-bezier(.2,.8,.2,1)";wrap.style.transform="";
-      setTimeout(function(){wrap.style.transition="";},320);
+      // Stay where it was dropped: fold the drag offset into the saved position.
+      var m=16,w=wrap.offsetWidth,room=Math.max(1,window.innerWidth-2*m-w),left=wrap.getBoundingClientRect().left;
+      pos=Math.max(0,Math.min(1,(left-m)/room));
+      try{localStorage.setItem("vn-fab-x",pos.toFixed(4));}catch(_){}
+      wrap.classList.remove("dragging");wrap.style.transform="";place();
     }
     main.addEventListener("pointerup",endDrag);
     main.addEventListener("pointercancel",function(){endDrag(null);});
