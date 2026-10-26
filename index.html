@@ -71,12 +71,12 @@ button{font:inherit;color:inherit}
 .flip-face{position:absolute;top:0;height:100%;width:calc(100% + 1.5px);overflow:hidden;background:var(--paper);-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .flip-stage.back .flip-face{right:0}
 .flip-back{transform:rotateY(180deg);background:var(--paper-2)}
-.flip-shade,.flip-gloss{position:absolute;inset:0;z-index:10;pointer-events:none}
+.flip-shade,.flip-gloss{position:absolute;inset:0;pointer-events:none}
 .flip-gloss{mix-blend-mode:soft-light}
 /* Pinned headers are frozen as ordinary positioned text inside the snapshot, so they turn with the page */
 .flip-clone .masthead,.flip-clone .sec-head{position:relative!important}
 .flip-clone .nameplate{will-change:auto}
-.flip-clone{position:absolute;margin:0}
+.flip-clone{position:absolute;margin:0;z-index:0}
 
 /* Live tuning panel (open the page with ?tune) */
 .tune{position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:60;max-width:440px;margin:0 auto;
@@ -178,7 +178,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   <main id="edition">
     <div class="empty"><div class="label">Fetching editions</div></div>
   </main>
-  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 08:12</span></footer>
+  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 09:06</span></footer>
 </div>
 
 <script>
@@ -577,7 +577,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
         strips[k].el.style.transform=(k===0?"translateZ("+(CFG.lift*bend).toFixed(1)+"px) ":"")+"rotateY("+rel.toFixed(2)+"deg)";
         var cs=Math.cos(abs*Math.PI/180),aa=Math.abs(abs);
         // Front darkens as it turns away from the light; the back is darkest edge-on and lightens as it lies flat.
-        F.push(CFG.shading*Math.max(0,1-cs)*0.9);B.push(CFG.shading*Math.max(0,1+cs)*0.6);
+        F.push(Math.min(.85,CFG.shading*Math.max(0,1-cs)*0.9));B.push(Math.min(.6,CFG.shading*Math.max(0,1+cs)*0.6));
         G.push(CFG.gloss*Math.exp(-Math.pow((aa-45)/22,2)));
       }
       // Each strip's shading runs from the value shared with its neighbour on one side to the other, so the
