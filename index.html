@@ -28,8 +28,8 @@
   --paper:#1f1e1b; --paper-2:#292824; --ink:#d6d1c4; --ink-2:#9b958a; --rule:#3b3933; --link:#a3b8c8; color-scheme:dark;
 }}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;overflow-x:clip}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-serif);font-size:17px;line-height:1.55;
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-serif);font-size:1rem;line-height:1.55;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
 a{color:var(--link);text-decoration-thickness:1px;text-underline-offset:2px}
@@ -37,7 +37,7 @@ button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--link);outline-offset:2px}
 [hidden]{display:none!important}
 .paper{max-width:680px;margin:0 auto}
-.label{font-family:var(--f-label);font-weight:500;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.label{font-family:var(--f-label);font-weight:500;font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
 
 /* Masthead */
 /* Masthead: Older | nameplate | Newer on one row, today's date beneath. The whole block sticks; script shrinks
@@ -92,7 +92,7 @@ button{font:inherit;color:inherit}
 .tune-body .sep{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.15);margin:4px 0}
 .tune-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
 .tune-msg{grid-column:1/-1;opacity:.75;font-size:12px;min-height:1.2em}
-.lede{margin:0;font-style:italic;font-size:19px;line-height:1.5;text-wrap:pretty}
+.lede{margin:0;font-style:italic;font-size:1.2rem;line-height:1.5;text-wrap:pretty}
 .h2{display:flex;align-items:center;gap:10px;margin:0}
 .h2::after{content:"";flex:1;border-top:1px solid var(--rule)}
 .stories{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
@@ -102,23 +102,23 @@ button{font:inherit;color:inherit}
 .story summary::-webkit-details-marker{display:none}
 .kick{display:flex;flex-wrap:wrap;gap:4px 10px}
 .kick .top{color:var(--ink);font-weight:600}
-.hl{margin:0;font-weight:600;font-size:20px;line-height:1.25;text-wrap:balance}
-.story.lead .hl{font-size:clamp(23px,5.6vw,28px);font-weight:700;line-height:1.18}
-.why{margin:0;color:var(--ink-2);font-size:16px}
-.byline{display:flex;justify-content:space-between;gap:12px;font-family:var(--f-label);font-size:13px;color:var(--ink-2)}
+.hl{margin:0;font-weight:600;font-size:1.375rem;line-height:1.25;text-wrap:balance}
+.story.lead .hl{font-size:1.625rem;font-weight:700;line-height:1.18}
+.why{margin:0;color:var(--ink-2);font-size:1.25rem;line-height:1.45}
+.byline{display:flex;justify-content:space-between;gap:12px;font-family:var(--f-label);font-size:.8125rem;color:var(--ink-2)}
 .byline .more{white-space:nowrap}
 details[open] .more .o, details:not([open]) .more .c{display:none}
 .body{padding-bottom:16px;display:flex;flex-direction:column;gap:10px}
-.body p{margin:0;max-width:65ch;text-wrap:pretty}
+.body p{margin:0;max-width:65ch;text-wrap:pretty;font-size:1rem}
 .body p:first-child::first-letter{font-weight:600}
-.links{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--f-label);font-size:14px}
+.links{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--f-label);font-size:.875rem}
 .watch{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:14px}
 .watch li{max-width:65ch}
 .allsrc summary{cursor:pointer;list-style:none}
 .allsrc summary::-webkit-details-marker{display:none}
-.allsrc ol{margin:12px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:4px;font-size:15px;color:var(--ink-2)}
+.allsrc ol{margin:12px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:4px;font-size:.9375rem;color:var(--ink-2)}
 .allsrc li{overflow-wrap:anywhere}
-.note{margin:0;font-size:14px;color:var(--ink-2);font-style:italic}
+.note{margin:0;font-size:.875rem;color:var(--ink-2);font-style:italic}
 .hint{text-align:center;margin:0}
 .empty{padding-block:48px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
 .empty p{margin:0;max-width:40ch;color:var(--ink-2)}
@@ -151,13 +151,13 @@ details[open] .more .o, details:not([open]) .more .c{display:none}
 /* Newspaper section heads: heavy rule, section name on the left, an optional control on the right */
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 6px;padding-top:10px;
   border-top:3px solid var(--ink);padding-bottom:10px}
-.sec-title{margin:0;font-family:var(--f-serif);font-weight:700;font-size:21px;line-height:1.2;color:var(--ink)}
-.sec-meta{font-family:var(--f-label);font-size:14px;color:var(--ink-2)}
+.sec-title{margin:0;font-family:var(--f-serif);font-weight:700;font-size:1.3125rem;line-height:1.2;color:var(--ink)}
+.sec-meta{font-family:var(--f-label);font-size:.875rem;color:var(--ink-2)}
 .sec-head.toggle{cursor:pointer}
-.sec-btn{background:none;border:0;padding:4px 0 4px 12px;margin:-4px 0;cursor:pointer;font-family:var(--f-label);font-weight:600;font-size:14px;color:var(--ink)}
+.sec-btn{background:none;border:0;padding:4px 0 4px 12px;margin:-4px 0;cursor:pointer;font-family:var(--f-label);font-weight:600;font-size:.875rem;color:var(--ink)}
 .sec-head .left{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .sec-body{display:flex;flex-direction:column;gap:36px}
-.sub-head{margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--rule);font-family:var(--f-serif);font-weight:700;font-size:18px;color:var(--ink)}
+.sub-head{margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--rule);font-family:var(--f-serif);font-weight:700;font-size:1.125rem;color:var(--ink)}
 .allsrc summary{padding-block:4px}
 footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-align:center}
 </style>
@@ -701,6 +701,40 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     // Re-measure whenever the masthead's size changes (the blackletter font arriving late, the date text, rotation).
     if("ResizeObserver" in window){var lastH=0;new ResizeObserver(function(){var h=mh.offsetHeight;if(h!==lastH){lastH=h;m=null;req();}}).observe(mh);}
     update();
+  })();
+
+  /* ---------- Pinch to resize the news text ----------
+     Pinching scales only the text below the masthead (everything there is sized in rem), instead of zooming the
+     whole page: the text rewraps to the screen, while the masthead, date and play button keep their size.
+     The paragraph under your fingers stays put while it resizes. The size is remembered on this device. */
+  (function(){
+    var root=document.documentElement,MIN=0.8,MAX=1.8,ts=1;
+    try{var v=parseFloat(localStorage.getItem("vn-text"));if(v>=MIN&&v<=MAX)ts=v;}catch(_){}
+    function apply(v,cx,cy){
+      v=Math.max(MIN,Math.min(MAX,v));if(Math.abs(v-ts)<0.002)return;
+      // keep whatever is under the fingers in place while the text reflows
+      var anchor=null,top0=0;
+      if(typeof cy==="number"){var hit=document.elementFromPoint(cx||window.innerWidth/2,cy);
+        anchor=hit&&hit.closest&&hit.closest("p,li,h2,h3,.sec-head,section");if(anchor)top0=anchor.getBoundingClientRect().top;}
+      ts=v;root.style.fontSize=(16*ts).toFixed(2)+"px";
+      if(anchor)window.scrollBy(0,anchor.getBoundingClientRect().top-top0);
+    }
+    function save(){try{localStorage.setItem("vn-text",ts.toFixed(3));}catch(_){}}
+    if(ts!==1)root.style.fontSize=(16*ts).toFixed(2)+"px";
+    var base=1,cx=0,cy=0;
+    // Safari (iPhone, iPad, Mac trackpad): gesture events carry the pinch scale; cancelling them stops page zoom.
+    document.addEventListener("gesturestart",function(e){e.preventDefault();base=ts;cx=e.clientX;cy=e.clientY;},{passive:false});
+    document.addEventListener("gesturechange",function(e){e.preventDefault();apply(base*e.scale,cx,cy);},{passive:false});
+    document.addEventListener("gestureend",function(e){e.preventDefault();save();},{passive:false});
+    // Other touch browsers: measure the distance between two fingers.
+    var d0=0;
+    function dist(t){var dx=t[0].clientX-t[1].clientX,dy=t[0].clientY-t[1].clientY;return Math.sqrt(dx*dx+dy*dy);}
+    document.addEventListener("touchstart",function(e){if(e.touches.length===2){d0=dist(e.touches);base=ts;
+      cx=(e.touches[0].clientX+e.touches[1].clientX)/2;cy=(e.touches[0].clientY+e.touches[1].clientY)/2;}},{passive:true});
+    document.addEventListener("touchmove",function(e){if(e.touches.length===2&&d0){if(e.cancelable)e.preventDefault();apply(base*dist(e.touches)/d0,cx,cy);}},{passive:false});
+    document.addEventListener("touchend",function(e){if(d0&&e.touches.length<2){d0=0;save();}},{passive:true});
+    // Desktop: ctrl/⌘ + trackpad pinch arrives as a ctrl+wheel event.
+    window.addEventListener("wheel",function(e){if(!e.ctrlKey)return;e.preventDefault();apply(ts*Math.exp(-e.deltaY*0.01),e.clientX,e.clientY);save();},{passive:false});
   })();
 
   function goTo(target){
