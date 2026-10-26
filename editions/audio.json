@@ -34,5 +34,11 @@
     "sha": "19dd2f253d23",
     "duration": 118.4,
     "voice": "bf_emma"
+  },
+  "2026-10-26": {
+    "file": "2026-10-26.mp3",
+    "sha": "2d052e0aeaed",
+    "duration": 118.8,
+    "voice": "bf_emma"
   }
 }
