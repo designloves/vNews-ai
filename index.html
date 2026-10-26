@@ -28,7 +28,7 @@
   --paper:#1f1e1b; --paper-2:#292824; --ink:#d6d1c4; --ink-2:#9b958a; --rule:#3b3933; --link:#a3b8c8; color-scheme:dark;
 }}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-serif);font-size:17px;line-height:1.55;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
@@ -44,7 +44,8 @@ button{font:inherit;color:inherit}
    the nameplate in step with scrolling so it arrives compact exactly as the block locks in. */
 .masthead{position:sticky;top:var(--mh-top,0px);z-index:32;background:var(--paper);margin-inline:-16px;padding:12px 16px 10px}
 .masthead.full{box-shadow:0 8px 16px -12px rgba(0,0,0,.45)}
-.mh-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px}
+.mh-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:4px}
+.mh-row .nav{white-space:nowrap;padding:8px 4px;font-size:12.5px;overflow:hidden;text-overflow:clip}
 .mh-row #older{justify-self:start}.mh-row #newer{justify-self:end}
 .masthead .when{margin-top:6px;font-family:var(--f-label);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;text-align:center;min-height:1.2em}
 .nav{background:none;border:1px solid transparent;border-radius:6px;padding:8px 8px;cursor:pointer;font-family:var(--f-label);font-size:13px;letter-spacing:.04em;color:var(--ink-2);white-space:nowrap}
@@ -53,7 +54,7 @@ button{font:inherit;color:inherit}
 :root{--bar:0px}
 /* Solid paper behind the status bar / Dynamic Island, so nothing scrolls visibly underneath it */
 .statusbar{position:fixed;left:0;right:0;top:0;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:31;pointer-events:none}
-.nameplate{margin:0;font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-weight:400;font-size:clamp(38px,10.5vw,72px);line-height:1}
+.nameplate{margin:0;font-family:"UnifrakturMaguntia","Old English Text MT",var(--f-serif);font-weight:400;font-size:clamp(30px,9vw,72px);line-height:1}
 /* The nameplate sticks to the top of the screen; script shrinks it in step with scrolling until it locks */
 .nameplate{transform-origin:50% 100%;will-change:transform;white-space:nowrap}
 
@@ -664,7 +665,16 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     if(!mh||!big||!anchor)return;
     var strip=el("div","statusbar");document.body.appendChild(strip);
     var navs=[olderBtn,newerBtn],SMALL=30,GAP=4,m=null,pinned=null,ticking=false;
+    // Shrink the nameplate if "‹ Older · vertical news · Newer ›" would not fit on one row with the real font.
+    function fit(){
+      big.style.fontSize="";
+      var row=big.parentNode,cs=getComputedStyle(row),gap=parseFloat(cs.columnGap)||0;
+      var room=row.clientWidth-olderBtn.offsetWidth-newerBtn.offsetWidth-2*gap-6;
+      var w=big.scrollWidth,fs=parseFloat(getComputedStyle(big).fontSize);
+      if(w>room&&room>0)big.style.fontSize=Math.max(22,Math.floor(fs*room/w))+"px";
+    }
     function measure(){
+      fit();
       var fs=parseFloat(getComputedStyle(big).fontSize)||60,h0=big.offsetHeight,H0=mh.offsetHeight,safe=strip.offsetHeight;
       var P=parseFloat(getComputedStyle(mh).paddingTop)||0,s=Math.min(1,SMALL/fs);
       var Hc=GAP+h0*s+(H0-P-h0);                    // compact height: shrunk nameplate plus everything below it
