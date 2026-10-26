@@ -176,7 +176,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   <main id="edition">
     <div class="empty"><div class="label">Fetching editions</div></div>
   </main>
-  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 07:59</span></footer>
+  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 08:04</span></footer>
 </div>
 
 <script>
@@ -332,7 +332,8 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   var WPS=160/60;
   function words(i){var it=P.items[i];if(!it)return [];if(!it.w)it.w=it.text.split(" ");return it.w;}
   function speakFrom(i,off){
-    var t=++P.token;synth.cancel();
+    // Only cancel when something is queued: on iOS, cancel() right before speak() can leave the voice silent.
+    var t=++P.token;if(synth.speaking||synth.pending)synth.cancel();
     if(i>=P.items.length){finish();return;}
     P.mode="speech";P.i=Math.max(0,i);off=Math.max(0,off||0);P.off=off;P.said=0;P.t0=performance.now();P.bound=false;
     P.state="playing";updateUI();
