@@ -28,7 +28,7 @@
   --paper:#1f1e1b; --paper-2:#292824; --ink:#d6d1c4; --ink-2:#9b958a; --rule:#3b3933; --link:#a3b8c8; color-scheme:dark;
 }}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;touch-action:pan-x pan-y}   /* pinch is handled by the page: it resizes the news text */
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-serif);font-size:1rem;line-height:1.55;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
@@ -177,7 +177,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   <main id="edition">
     <div class="empty"><div class="label">Fetching editions</div></div>
   </main>
-  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 07:45</span></footer>
+  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 07:48</span></footer>
 </div>
 
 <script>
