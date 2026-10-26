@@ -71,9 +71,11 @@ button{font:inherit;color:inherit}
 .flip-face{position:absolute;top:0;height:100%;width:calc(100% + 1.5px);overflow:hidden;background:var(--paper);-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .flip-stage.back .flip-face{right:0}
 .flip-back{transform:rotateY(180deg);background:var(--paper-2)}
-.flip-shade,.flip-gloss{position:absolute;inset:0;opacity:0}
-.flip-shade{background:#000}
-.flip-gloss{background:#fff;mix-blend-mode:soft-light}
+.flip-shade,.flip-gloss{position:absolute;inset:0;z-index:10;pointer-events:none}
+.flip-gloss{mix-blend-mode:soft-light}
+/* Pinned headers are frozen as ordinary positioned text inside the snapshot, so they turn with the page */
+.flip-clone .masthead,.flip-clone .sec-head{position:relative!important}
+.flip-clone .nameplate{will-change:auto}
 .flip-clone{position:absolute;margin:0}
 
 /* Live tuning panel (open the page with ?tune) */
@@ -176,7 +178,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   <main id="edition">
     <div class="empty"><div class="label">Fetching editions</div></div>
   </main>
-  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 08:04</span></footer>
+  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 08:12</span></footer>
 </div>
 
 <script>
@@ -524,7 +526,16 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
     var stage=el("div","flip-stage "+(fwd?"fwd":"back")),under=el("div","flip-under");
     stage.style.perspective=CFG.persp+"px";
     stage.setAttribute("aria-hidden","true");stage.appendChild(under);
+    // Pinned (sticky) headers would get their own layer on the turning sheet, escaping its shading and showing
+    // through from behind. Measure how far each is currently pushed from its place in the flow, and freeze it there.
+    var stickies=[].slice.call(paper.querySelectorAll(".masthead,.sec-head")),stuck=stickies.map(function(e){return e.getBoundingClientRect().top;});
+    stickies.forEach(function(e){e.style.position="static";});
+    var shifts=stickies.map(function(e,i){return stuck[i]-e.getBoundingClientRect().top;});
+    stickies.forEach(function(e){e.style.position="";});
     var proto=paper.cloneNode(true);proto.classList.add("flip-clone");
+    [].slice.call(proto.querySelectorAll(".masthead,.sec-head")).forEach(function(e,i){
+      e.style.top=(shifts[i]||0).toFixed(1)+"px";e.style.zIndex=e.classList.contains("masthead")?"3":"2";
+    });
     proto.querySelectorAll("[id]").forEach(function(n){n.removeAttribute("id");});
     proto.style.top=r.top+"px";proto.style.width=r.width+"px";
     var strips=[],parent=stage;
@@ -560,15 +571,25 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
       // The side by the hinge lags while the far side peels up: hold the hinge back by part of the bend,
       // so the middle of the sheet tracks the turn and the page stays on screen longer.
       var extra=Math.abs(curl)+Math.abs(roll)*(N-1),base=sg*Math.max(0,Math.abs(A)-0.6*extra);
+      var F=[],B=[],G=[];
       for(var k=0;k<N;k++){
         var rel=(k===0?base:0)+curl*wts[k]/wsum+(k===0?0:roll);abs+=rel;
-        var t=strips[k];
-        t.el.style.transform=(k===0?"translateZ("+(CFG.lift*bend).toFixed(1)+"px) ":"")+"rotateY("+rel.toFixed(2)+"deg)";
-        var cs=Math.cos(abs*Math.PI/180);
+        strips[k].el.style.transform=(k===0?"translateZ("+(CFG.lift*bend).toFixed(1)+"px) ":"")+"rotateY("+rel.toFixed(2)+"deg)";
+        var cs=Math.cos(abs*Math.PI/180),aa=Math.abs(abs);
         // Front darkens as it turns away from the light; the back is darkest edge-on and lightens as it lies flat.
-        t.fs.style.opacity=(CFG.shading*Math.max(0,1-cs)*0.9).toFixed(3);
-        t.bs.style.opacity=(CFG.shading*Math.max(0,1+cs)*0.6).toFixed(3);
-        var a=Math.abs(abs);t.fg.style.opacity=(CFG.gloss*Math.exp(-Math.pow((a-45)/22,2))).toFixed(3);
+        F.push(CFG.shading*Math.max(0,1-cs)*0.9);B.push(CFG.shading*Math.max(0,1+cs)*0.6);
+        G.push(CFG.gloss*Math.exp(-Math.pow((aa-45)/22,2)));
+      }
+      // Each strip's shading runs from the value shared with its neighbour on one side to the other, so the
+      // light changes continuously across the sheet instead of in visible bands.
+      var toFree=fwd?"to right":"to left",toFreeBack=fwd?"to left":"to right";
+      function edge(arr,k){return k<0?arr[0]:k>=N-1?arr[N-1]:(arr[k]+arr[k+1])/2;}
+      function grad(dir,rgb,a0,a1){return "linear-gradient("+dir+",rgba("+rgb+","+a0.toFixed(3)+"),rgba("+rgb+","+a1.toFixed(3)+"))";}
+      for(k=0;k<N;k++){
+        var t=strips[k];
+        t.fs.style.background=grad(toFree,"0,0,0",edge(F,k-1),edge(F,k));
+        t.bs.style.background=grad(toFreeBack,"0,0,0",edge(B,k-1),edge(B,k));
+        t.fg.style.background=grad(toFree,"255,255,255",edge(G,k-1),edge(G,k));
       }
       under.style.opacity=(CFG.shadow*Math.min(1,(1-p)*1.6)*(p>0.002?1:0)).toFixed(3);
     }
