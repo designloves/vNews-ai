@@ -178,7 +178,7 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
   <main id="edition">
     <div class="empty"><div class="label">Fetching editions</div></div>
   </main>
-  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 09:06</span></footer>
+  <footer class="label">Vertical News · A new edition every morning<br><span class="build">Version 26 Oct, 18:50</span></footer>
 </div>
 
 <script>
@@ -238,29 +238,32 @@ footer{margin-top:40px;padding-top:10px;border-top:1px solid var(--rule);text-al
       var h=el("div","sec-head"),l=el("div","left");l.appendChild(el("h2","sec-title",title));
       if(meta)l.appendChild(el("span","sec-meta",meta));h.appendChild(l);return h;
     }
+    // Tapping a section head (or its Show/Hide) folds the section away; Top stories starts open, All news closed.
+    function foldable(head,body,open){
+      head.classList.add("toggle");
+      var tog=el("button","sec-btn");tog.type="button";head.appendChild(tog);
+      function set(o){body.hidden=!o;tog.setAttribute("aria-expanded",String(o));tog.textContent=o?"Hide ▴":"Show ▾";}
+      head.addEventListener("click",function(e){if(e.target.closest&&e.target.closest("a"))return;set(body.hidden);});
+      set(open);
+    }
     if(tops.length){
-      var ts=el("section");ts.appendChild(secHead("Top stories"));
+      var ts=el("section"),th=secHead("Top stories",tops.length+(tops.length===1?" story":" stories"));
       var tol=el("ol","stories");tops.forEach(function(s){tol.appendChild(storyEl(s,true));});
-      ts.appendChild(tol);wrap.appendChild(ts);
+      ts.appendChild(th);ts.appendChild(tol);wrap.appendChild(ts);foldable(th,tol,true);
     }
     // All news: the remaining stories plus Worth watching, folded away behind the section head.
     var w=arr(x.watch).filter(Boolean);
     if(rest.length||w.length){
       var as=el("section","allnews");
       var meta=rest.length?rest.length+(rest.length===1?" story":" stories"):"";
-      var hd=secHead("All news",meta);hd.classList.add("toggle");
-      var tog=el("button","sec-btn","Show ▾");tog.type="button";tog.setAttribute("aria-expanded","false");
-      hd.appendChild(tog);as.appendChild(hd);
-      var body=el("div","sec-body");body.hidden=true;
+      var hd=secHead("All news",meta);as.appendChild(hd);
+      var body=el("div","sec-body");
       if(rest.length){var aol=el("ol","stories");rest.forEach(function(s){aol.appendChild(storyEl(s,false));});body.appendChild(aol);}
       if(w.length){var ws=el("div");ws.appendChild(el("h3","sub-head","Worth watching"));var ul=el("ul","watch");
         w.forEach(function(it){var li=el("li");if(str(it.title)){li.appendChild(el("strong",null,it.title+"."));li.appendChild(document.createTextNode(" "));}
           li.appendChild(document.createTextNode(str(it.text)+" "));var a=link(it.link);if(a)li.appendChild(a);ul.appendChild(li);});
         ws.appendChild(ul);body.appendChild(ws);}
-      as.appendChild(body);wrap.appendChild(as);
-      var flip=function(e){if(e&&e.target.closest&&e.target.closest("a"))return;var open=body.hidden;body.hidden=!open;
-        tog.setAttribute("aria-expanded",String(open));tog.textContent=open?"Hide ▴":"Show ▾";};
-      hd.addEventListener("click",flip);
+      as.appendChild(body);wrap.appendChild(as);foldable(hd,body,false);
     }
     var src=arr(x.sources).map(link).filter(Boolean);
     if(src.length){
