@@ -3,6 +3,7 @@
   "weekday": "Tuesday",
   "covers": "Mon 26 – Tue 27 Oct",
   "glance": "Anthropic's public IPO filing is the day's big story, putting hard numbers on revenue, compute spending and risk for the first time. Moonshot's Kimi K3.1 Pro keeps pushing open-weight models toward the frontier. A quiet news window otherwise, so this edition is short.",
+  "brief": "A short edition today, led by Anthropic's public listing documents. Its prospectus is now open for anyone to read, and press summaries put revenue for the first half of the year at about 16.3 billion dollars, with roughly a fifth to a quarter coming from just two customers. The striking part is compute: cloud commitments of around 450 billion dollars over ten years, and plans for its own data centres, with power connections and permits named as the main risks. For anyone building on these models, the lesson is dependency: prices and availability rest on a handful of suppliers, so it pays not to lock critical simulation or validation workflows to a single provider. In open models, Moonshot's Kimi K3.1 Pro is ranked fourth overall in independent tests and first among open-weight models, with the full weights promised by the fourth of November. If they arrive, companies that can't send design or test data to a US cloud could run a near-frontier model on their own hardware, though the licence and the vendor's own benchmark claims both deserve a careful look.",
   "stories": [
     {
       "cat": "gen",
@@ -17,9 +18,18 @@
         "For product teams, the takeaway is dependency: model prices and availability rest on a handful of suppliers and on capital markets staying open. For automotive and industrial engineers using AI tools in simulation and validation, it is a reminder to avoid locking critical workflows to a single model provider."
       ],
       "links": [
-        {"label": "Fortune – Anthropic S-1 and its compute strategy", "url": "https://fortune.com/2026/10/26/anthropics-s1-ipo-reveals-the-inner-workings-of-its-fast-evolving-compute-strategy/"},
-        {"label": "Axios – IPO filing outlines risks", "url": "https://www.axios.com/2026/10/26/anthropic-ipo-risk-factors-humanity"},
-        {"label": "SEC – Anthropic, PBC Form S-1", "url": "https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm"}
+        {
+          "label": "Fortune – Anthropic S-1 and its compute strategy",
+          "url": "https://fortune.com/2026/10/26/anthropics-s1-ipo-reveals-the-inner-workings-of-its-fast-evolving-compute-strategy/"
+        },
+        {
+          "label": "Axios – IPO filing outlines risks",
+          "url": "https://www.axios.com/2026/10/26/anthropic-ipo-risk-factors-humanity"
+        },
+        {
+          "label": "SEC – Anthropic, PBC Form S-1",
+          "url": "https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm"
+        }
       ]
     },
     {
@@ -35,25 +45,76 @@
         "If the weights ship as promised, companies that cannot send design or test data to a US cloud could run a near-frontier model on their own hardware. Check the licence terms and run your own evaluations before relying on the vendor's benchmark figures."
       ],
       "links": [
-        {"label": "Kimi K3.1 Pro launch coverage", "url": "https://pasqualepillitteri.it/en/news/26667/kimi-k3-1-pro-launches-open-weights-nov-4"},
-        {"label": "Neowin – Kimi K3 and open models", "url": "https://www.neowin.net/news/kimi-k3-shows-open-ai-models-have-finally-caught-up-with-proprietary-us-based-rivals/"}
+        {
+          "label": "Kimi K3.1 Pro launch coverage",
+          "url": "https://pasqualepillitteri.it/en/news/26667/kimi-k3-1-pro-launches-open-weights-nov-4"
+        },
+        {
+          "label": "Neowin – Kimi K3 and open models",
+          "url": "https://www.neowin.net/news/kimi-k3-shows-open-ai-models-have-finally-caught-up-with-proprietary-us-based-rivals/"
+        }
       ]
     }
   ],
   "watch": [
-    {"title": "Kimi K3.1 Pro weights", "text": "Moonshot has promised to publish the open weights by 4 November. Licence terms and independent benchmarks will show how real the claims are.", "link": {"label": "Launch coverage", "url": "https://pasqualepillitteri.it/en/news/26667/kimi-k3-1-pro-launches-open-weights-nov-4"}},
-    {"title": "Audi US plant (reported)", "text": "CleanTechnica reports Audi plans a roughly $4 billion plant in Georgia, with plug-in hybrids among the planned models. This is not yet confirmed by Audi in the material we found.", "link": {"label": "CleanTechnica", "url": "https://cleantechnica.com/2026/10/26/audi-factory-us-plugin-hybrid-evs-trump-celebrates/"}},
-    {"title": "BYD solid-state flagship (rumour)", "text": "Electrek relays reports that BYD may show an ultra-luxury EV with solid-state batteries in early November. The report relies on unnamed sources.", "link": {"label": "Electrek", "url": "https://electrek.co/2026/10/26/byds-ultra-luxury-ev-may-debut-next-week-with-solid-state-batteries/"}}
+    {
+      "title": "Kimi K3.1 Pro weights",
+      "text": "Moonshot has promised to publish the open weights by 4 November. Licence terms and independent benchmarks will show how real the claims are.",
+      "link": {
+        "label": "Launch coverage",
+        "url": "https://pasqualepillitteri.it/en/news/26667/kimi-k3-1-pro-launches-open-weights-nov-4"
+      }
+    },
+    {
+      "title": "Audi US plant (reported)",
+      "text": "CleanTechnica reports Audi plans a roughly $4 billion plant in Georgia, with plug-in hybrids among the planned models. This is not yet confirmed by Audi in the material we found.",
+      "link": {
+        "label": "CleanTechnica",
+        "url": "https://cleantechnica.com/2026/10/26/audi-factory-us-plugin-hybrid-evs-trump-celebrates/"
+      }
+    },
+    {
+      "title": "BYD solid-state flagship (rumour)",
+      "text": "Electrek relays reports that BYD may show an ultra-luxury EV with solid-state batteries in early November. The report relies on unnamed sources.",
+      "link": {
+        "label": "Electrek",
+        "url": "https://electrek.co/2026/10/26/byds-ultra-luxury-ev-may-debut-next-week-with-solid-state-batteries/"
+      }
+    }
   ],
   "sources": [
-    {"label": "Fortune – Anthropic's S-1 reveals its compute strategy (26 Oct)", "url": "https://fortune.com/2026/10/26/anthropics-s1-ipo-reveals-the-inner-workings-of-its-fast-evolving-compute-strategy/"},
-    {"label": "Axios – Anthropic's IPO filing outlines AI risks (26 Oct)", "url": "https://www.axios.com/2026/10/26/anthropic-ipo-risk-factors-humanity"},
-    {"label": "Motley Fool – 5 key numbers from Anthropic's S-1 (26 Oct)", "url": "https://www.fool.com/investing/2026/10/26/5-key-numbers-from-anthropic-s-s-1-filing/"},
-    {"label": "SEC EDGAR – Anthropic, PBC Form S-1", "url": "https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm"},
-    {"label": "Kimi K3.1 Pro launches, open weights Nov 4", "url": "https://pasqualepillitteri.it/en/news/26667/kimi-k3-1-pro-launches-open-weights-nov-4"},
-    {"label": "Neowin – Kimi K3 and open AI models (Oct 2026)", "url": "https://www.neowin.net/news/kimi-k3-shows-open-ai-models-have-finally-caught-up-with-proprietary-us-based-rivals/"},
-    {"label": "CleanTechnica – Audi US factory (26 Oct)", "url": "https://cleantechnica.com/2026/10/26/audi-factory-us-plugin-hybrid-evs-trump-celebrates/"},
-    {"label": "Electrek – BYD ultra-luxury EV (26 Oct)", "url": "https://electrek.co/2026/10/26/byds-ultra-luxury-ev-may-debut-next-week-with-solid-state-batteries/"}
+    {
+      "label": "Fortune – Anthropic's S-1 reveals its compute strategy (26 Oct)",
+      "url": "https://fortune.com/2026/10/26/anthropics-s1-ipo-reveals-the-inner-workings-of-its-fast-evolving-compute-strategy/"
+    },
+    {
+      "label": "Axios – Anthropic's IPO filing outlines AI risks (26 Oct)",
+      "url": "https://www.axios.com/2026/10/26/anthropic-ipo-risk-factors-humanity"
+    },
+    {
+      "label": "Motley Fool – 5 key numbers from Anthropic's S-1 (26 Oct)",
+      "url": "https://www.fool.com/investing/2026/10/26/5-key-numbers-from-anthropic-s-s-1-filing/"
+    },
+    {
+      "label": "SEC EDGAR – Anthropic, PBC Form S-1",
+      "url": "https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm"
+    },
+    {
+      "label": "Kimi K3.1 Pro launches, open weights Nov 4",
+      "url": "https://pasqualepillitteri.it/en/news/26667/kimi-k3-1-pro-launches-open-weights-nov-4"
+    },
+    {
+      "label": "Neowin – Kimi K3 and open AI models (Oct 2026)",
+      "url": "https://www.neowin.net/news/kimi-k3-shows-open-ai-models-have-finally-caught-up-with-proprietary-us-based-rivals/"
+    },
+    {
+      "label": "CleanTechnica – Audi US factory (26 Oct)",
+      "url": "https://cleantechnica.com/2026/10/26/audi-factory-us-plugin-hybrid-evs-trump-celebrates/"
+    },
+    {
+      "label": "Electrek – BYD ultra-luxury EV (26 Oct)",
+      "url": "https://electrek.co/2026/10/26/byds-ultra-luxury-ev-may-debut-next-week-with-solid-state-batteries/"
+    }
   ],
   "note": "All summaries are paraphrased. Benchmark figures are vendor-reported. Financial figures for Anthropic come from press summaries and differ between outlets; check the SEC filing for exact numbers."
 }
