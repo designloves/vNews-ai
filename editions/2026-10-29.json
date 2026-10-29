@@ -1,0 +1,75 @@
+{
+ "date": "2026-10-29",
+ "weekday": "Thursday",
+ "covers": "Tue 27 – Thu 29 Oct",
+ "glance": "Stellantis reported a third-quarter net loss and a deep cash outflow even as revenue edged up and it kept its full-year guidance. OpenAI's cheaper GPT-6.1 Terra pushes computer-use agents towards everyday pricing, and a report says Volkswagen is weighing its China-developed vehicle electronics for European models.",
+ "stories": [
+  {
+   "cat": "auto",
+   "top": true,
+   "date": "28 Oct",
+   "headline": "Stellantis posts a Q3 net loss of €0.5 billion and burns €4 billion of industrial cash",
+   "why": "One of Europe's largest vehicle makers is barely profitable at the operating level, which keeps pressure on suppliers and on spending for new vehicle programmes.",
+   "source": "Stellantis (SEC filing)",
+   "body": [
+    "Stellantis published its third-quarter 2026 results in a filing with the US regulator. Net revenues were €37.6 billion, up 1.0% on a year earlier. The group reported a net loss of €0.5 billion and adjusted operating income of €0.3 billion, a margin of 0.7%. Industrial free cash flow was negative €4.0 billion, while industrial available liquidity stood at €42.7 billion. The company reaffirmed its guidance.",
+    "By region, revenue in the enlarged Europe region rose 3% and South America 3%. North America fell 3%, Asia Pacific fell 7% and Middle East & Africa dropped 19%. Earlier in October the group had already indicated that consolidated shipments for the quarter were about 1.3 million vehicles, down 1%.",
+    "For suppliers and engineering teams, a thin margin and heavy cash burn at a major customer usually mean tougher price negotiations and closer scrutiny of development budgets. The figures are company-reported and unaudited."
+   ],
+   "links": [
+    {"label": "Stellantis Q3 2026 press release (SEC)", "url": "https://www.sec.gov/Archives/edgar/data/0001605484/000160548426000090/stellantisnvq32026pressrel.htm"}
+   ]
+  },
+  {
+   "cat": "gen",
+   "top": true,
+   "date": "26 Oct",
+   "headline": "OpenAI launches GPT-6.1 Terra, a mid-priced model built for computer use",
+   "why": "Agents that operate real screens and apps are getting cheap enough to try in prototyping, test automation and internal tools.",
+   "source": "The Next Web · AI Weekly · Decrypt",
+   "body": [
+    "OpenAI released GPT-6.1 Terra, a mid-tier model aimed at routine computer work: it reads what is on a screen and then clicks, types and moves between applications. It replaces GPT-5.6 Terra and sits below Sol and Astra but above Luna in OpenAI's range. It is available to developers as gpt-6.1-terra.",
+    "Pricing is $1 per million input tokens and $5 per million output tokens, half the rate of GPT-6.1 Sol and about half of its predecessor. Cached input is $0.05 per million tokens. OpenAI says Terra finishes tasks more than three times faster than Astra and Sol, and that on its own error-inducing prompts the error rate fell from 53.6% to 16.7% at low reasoning effort, and to 4.3% at maximum effort. These are vendor figures from internal tests; independent benchmarks were not available. OpenAI still points users to Sol or Astra for the hardest coding work.",
+    "For product and design teams, the practical question is whether screen-driving agents are now reliable and affordable enough for UI regression checks, research tooling or repetitive back-office flows. Engineering groups running simulation and test toolchains with graphical front ends may see similar openings."
+   ],
+   "links": [
+    {"label": "The Next Web", "url": "https://thenextweb.com/news/openai-gpt-6-1-terra-computer-use"},
+    {"label": "AI Weekly", "url": "https://aiweekly.co/alerts/openai-ships-gpt-61-terra-at-15-per-million-half-of-sol"},
+    {"label": "Decrypt", "url": "https://decrypt.co/381883/openai-launches-gpt-6-1-terra-half-good-half-price"}
+   ]
+  },
+  {
+   "cat": "auto",
+   "top": false,
+   "date": "26 Oct (report)",
+   "headline": "Report: Volkswagen weighs using its China-built vehicle electronics for European models",
+   "why": "If confirmed, it would show Chinese-developed software and electrical architecture moving into mainstream European cars, with consequences for suppliers and validation work.",
+   "source": "Reuters via TimesLIVE · Manager Magazin (as relayed)",
+   "body": [
+    "German outlet Manager Magazin reports, as relayed by Reuters, that Volkswagen is considering using the China Electronic Architecture (CEA) as the technical base for future Volkswagen, Škoda and Cupra models in Europe. The architecture was developed in China together with Xpeng and groups vehicle functions onto fewer, more powerful control units to cut development effort and complexity.",
+    "This is a report, not a company announcement, and accounts differ on how far it has progressed. One source says there are no immediate plans for Europe, and another links Volkswagen's next European electric generation to its software partnership with Rivian. Volkswagen has said the China-specific architecture entered production in China and has cut local development cycles by roughly 30%.",
+    "For European engineers, the open question is how a China-developed architecture would meet EU type-approval, cybersecurity and data rules, and what it would mean for suppliers' interfaces, simulation models and hardware-in-the-loop test set-ups."
+   ],
+   "links": [
+    {"label": "TimesLIVE (Reuters)", "url": "https://www.timeslive.co.za/motoring/2026-10-26-volkswagen-considers-using-chinese-software-for-europe-report-says/"},
+    {"label": "Nordisk Bil", "url": "https://www.nordiskbil.com/xpeng-volkswagen-new-architecture/"}
+   ]
+  }
+ ],
+ "watch": [
+  {"title": "Kimi K3.1 Pro open weights", "text": "Moonshot has promised to publish the weights by 4 November. Licence terms and independent benchmarks will show how close open models really are to the frontier.", "link": {"label": "Launch coverage", "url": "https://pasqualepillitteri.it/en/news/26667/kimi-k3-1-pro-launches-open-weights-nov-4"}},
+  {"title": "Timken Q3 results on 4 November", "text": "Timken will report third-quarter results before the US market opens, adding to SKF's recent report as a read on industrial bearing demand.", "link": {"label": "Timken announcement", "url": "https://finviz.com/news/402228/timken-to-announce-third-quarter-2026-financial-results-on-november-4"}},
+  {"title": "NSK–NTN combination", "text": "The two Japanese bearing makers plan to merge under a joint holding company, with a listing targeted for October 2027. Watch for overlap decisions in automotive bearings.", "link": {"label": "Bearing News", "url": "https://www.bearing-news.com/nsk-x-ntn-the-merger-that-will-reshape-the-bearing-industry-forever/"}}
+ ],
+ "sources": [
+  {"label": "Stellantis – Q3 2026 financial results press release (28 Oct 2026)", "url": "https://www.sec.gov/Archives/edgar/data/0001605484/000160548426000090/stellantisnvq32026pressrel.htm"},
+  {"label": "The Next Web – OpenAI launches GPT-6.1 Terra (26 Oct 2026)", "url": "https://thenextweb.com/news/openai-gpt-6-1-terra-computer-use"},
+  {"label": "AI Weekly – OpenAI ships GPT-6.1 Terra (Oct 2026)", "url": "https://aiweekly.co/alerts/openai-ships-gpt-61-terra-at-15-per-million-half-of-sol"},
+  {"label": "Decrypt – OpenAI launches GPT-6.1 Terra (Oct 2026)", "url": "https://decrypt.co/381883/openai-launches-gpt-6-1-terra-half-good-half-price"},
+  {"label": "TimesLIVE/Reuters – Volkswagen considers using Chinese software for Europe (26 Oct 2026)", "url": "https://www.timeslive.co.za/motoring/2026-10-26-volkswagen-considers-using-chinese-software-for-europe-report-says/"},
+  {"label": "Nordisk Bil – Xpeng and Volkswagen new architecture", "url": "https://www.nordiskbil.com/xpeng-volkswagen-new-architecture/"},
+  {"label": "Finviz – Timken to announce Q3 2026 results on 4 November", "url": "https://finviz.com/news/402228/timken-to-announce-third-quarter-2026-financial-results-on-november-4"},
+  {"label": "Bearing News – NSK x NTN merger", "url": "https://www.bearing-news.com/nsk-x-ntn-the-merger-that-will-reshape-the-bearing-industry-forever/"}
+ ],
+ "note": "All summaries are paraphrased. Benchmark and pricing figures are vendor-reported. Full articles could not be opened in this run, so details come from search results and official filings."
+}
