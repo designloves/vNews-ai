@@ -1,0 +1,166 @@
+{
+ "date": "2026-10-30",
+ "weekday": "Friday",
+ "covers": "Wed 28 – Fri 30 Oct",
+ "glance": "Big Tech earnings showed AI spending still climbing, but Microsoft and Alphabet both came in below capex expectations and Alphabet's shares fell sharply on weak cash flow. In automotive, Mercedes-Benz cut its 2026 outlook on China and rising costs, while Polestar's original model quietly ended production in China.",
+ "stories": [
+  {
+   "cat": "gen",
+   "top": true,
+   "date": "28–29 Oct",
+   "headline": "Microsoft and Alphabet spend less on AI than expected, and investors split on the results",
+   "why": "Cloud capacity, not demand, is now the limit on how fast AI products can scale, which affects roadmaps and pricing for anyone building on these platforms.",
+   "source": "CNBC · 24/7 Wall St · MLQ",
+   "body": [
+    "Microsoft and Alphabet reported quarterly results on 28 October, and both showed AI infrastructure spending slightly under what analysts had forecast. Microsoft trimmed its full-year capital spending forecast to about $170 billion from $175 billion. Its finance chief blamed delays at third-party GPU suppliers, saying some capacity will not be available until the first half of 2027.",
+    "Microsoft still beat on earnings and revenue, helped by Azure growth of 48%, and its shares edged higher. Alphabet kept its 2026 capex guidance at $195–205 billion, but its earnings per share of $2.12 fell well short of consensus and free cash flow was negative for a second straight quarter. Reports put the share drop at around 11%. Figures vary a little between outlets, so check the companies' own releases for exact numbers.",
+    "For product and design teams, the takeaway is that compute supply is a real constraint through at least mid-2027. Expect continued rate limits, tiered pricing and staged rollouts for the heaviest AI features. For engineering teams planning AI-assisted simulation or testing workloads, it is a reminder to secure capacity early and avoid designing around a single provider."
+   ],
+   "links": [
+    {
+     "label": "CNBC",
+     "url": "https://www.cnbc.com/2026/10/29/microsoft-google-ai-capex-estimates.html"
+    },
+    {
+     "label": "24/7 Wall St",
+     "url": "https://247wallst.com/investing/2026/10/29/alphabet-sinks-11-as-ai-spending-pushes-cash-flow-negative-again-microsoft-and-meta-edge-higher-amazon-slips/"
+    },
+    {
+     "label": "MLQ",
+     "url": "https://mlq.ai/news/microsofts-ai-capex-falls-below-target-as-alphabet-keeps-spending-plan-intact/"
+    }
+   ]
+  },
+  {
+   "cat": "auto",
+   "top": true,
+   "date": "27–28 Oct",
+   "headline": "Mercedes-Benz cuts its 2026 profit outlook as China sales fall 29%",
+   "why": "A weaker outlook from a premium European OEM signals more cost pressure on suppliers and development budgets.",
+   "source": "Mercedes-Benz Group · Bernama/dpa · EconoTimes",
+   "body": [
+    "Mercedes-Benz issued an ad hoc notice on 27 October lowering its full-year 2026 guidance ahead of its third-quarter report. It now expects an adjusted return on sales for Mercedes-Benz Cars of 2–3%, down from 3–5%. Group EBIT is now expected to match 2025 rather than come in significantly above it, and industrial free cash flow is expected to be significantly below last year.",
+    "The company pointed to a tougher market in China and higher fourth-quarter costs, including materials. Cars sold about 297,000 vehicles in China from January to September, down 29% from a year earlier. The third quarter itself was better than feared: group EBIT of €1.77 billion beat the €1.6 billion consensus and Cars margin was 2.5%, while industrial free cash flow of €172 million fell short of the €422 million expected. Shares fell about 4% on the news.",
+    "For suppliers and engineering teams, lower margins at a major OEM usually mean tighter pricing, sharper scrutiny of development cost and more pressure to shorten validation cycles. Virtual validation and simulation-led testing are often where cost savings are sought first."
+   ],
+   "links": [
+    {
+     "label": "Mercedes-Benz ad hoc release",
+     "url": "https://group.mercedes-benz.com/investors/reports-news/ad-hoc/adhoc-release-453568.html"
+    },
+    {
+     "label": "EconoTimes",
+     "url": "https://econotimes.com/Mercedes-Benz-Cuts-2026-Earnings-Outlook-as-China-Sales-Fall-29-1764476"
+    },
+    {
+     "label": "Bernama",
+     "url": "https://bernama.com/en/world/news.php?id=2626528"
+    }
+   ]
+  },
+  {
+   "cat": "auto",
+   "top": false,
+   "date": "28–29 Oct",
+   "headline": "Polestar 2 reportedly ends production in China after about 200,000 cars",
+   "why": "The brand now has a gap in its lineup while it deals with a US exit and a heavy reliance on Europe.",
+   "source": "Electrek · Automotive News · Drive Tesla Canada",
+   "body": [
+    "Reports say the last Polestar 2 has left Geely's Luqiao plant in China, bringing total output to just over 200,000 cars since production began in March 2020. Polestar had not issued an official statement or final production figure at the time of the reports, so the number should be treated as unofficial. A completely new successor is due in early 2027, which leaves a gap of several months with no new Polestar 2 to build.",
+    "The timing is awkward. Polestar is leaving the US market after the Commerce Department's export-control bureau declined to authorise it under the Connected Vehicle Rule, even though Volvo Cars, also controlled by Geely, received approval in May. Polestar says it will not appeal and will focus on Europe, which accounts for nearly 80% of its retail volume. Automotive News also reports the company is widening its range with the Polestar 4 SUV and further models despite continued losses.",
+    "For the wider industry, the case shows how ownership and software origin can now decide market access in the US, an issue for any European brand with Chinese-linked software or hardware in its supply chain."
+   ],
+   "links": [
+    {
+     "label": "Electrek",
+     "url": "https://electrek.co/2026/10/28/when-one-door-closes-polestar-2-production-ends-and-what-might-come-next/"
+    },
+    {
+     "label": "Automotive News",
+     "url": "https://www.autonews.com/volvo/polestar/ane-polestar-4-suv-product-offensive-1029/"
+    },
+    {
+     "label": "Drive Tesla Canada",
+     "url": "https://driveteslacanada.ca/news/polestar-2-production-ends-china-2026/"
+    }
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "title": "EU 2035 car CO2 rules head to plenary",
+   "text": "Parliament's Industry and Transport committees backed a softer 2035 target on 22 October; a plenary vote is planned for November. Reports differ on the exact reduction figure.",
+   "link": {
+    "label": "electrive",
+    "url": "https://www.electrive.com/2026/10/23/eu-auto-package-committee-vote-to-relax-co%E2%82%82-rules/"
+   }
+  },
+  {
+   "title": "Timken Q3 results on 4 November",
+   "text": "The bearing maker reports before the US market opens, with a call at 11:00 Eastern.",
+   "link": {
+    "label": "Finviz",
+    "url": "https://finviz.com/news/402228/timken-to-announce-third-quarter-2026-financial-results-on-november-4"
+   }
+  },
+  {
+   "title": "NSK and NTN integration",
+   "text": "NSK has raised its full-year sales forecast while planning a joint holding company with NTN, targeted for October 2027. NSK's half-year results were due 29 October.",
+   "link": {
+    "label": "NSK investor relations",
+    "url": "https://www.nsk.com/company/investors/ir-news/2026/financial-results-for-q1-fy2026--consolidated-/"
+   }
+  }
+ ],
+ "sources": [
+  {
+   "label": "CNBC – AI buildout hits snag as Google and Microsoft put off raising capex forecasts (29 Oct)",
+   "url": "https://www.cnbc.com/2026/10/29/microsoft-google-ai-capex-estimates.html"
+  },
+  {
+   "label": "24/7 Wall St – Alphabet sinks 11% as AI spending pushes cash flow negative again (29 Oct)",
+   "url": "https://247wallst.com/investing/2026/10/29/alphabet-sinks-11-as-ai-spending-pushes-cash-flow-negative-again-microsoft-and-meta-edge-higher-amazon-slips/"
+  },
+  {
+   "label": "MLQ – Microsoft's AI capex falls below target (Oct 2026)",
+   "url": "https://mlq.ai/news/microsofts-ai-capex-falls-below-target-as-alphabet-keeps-spending-plan-intact/"
+  },
+  {
+   "label": "Mercedes-Benz Group – ad hoc release on 2026 outlook (27 Oct)",
+   "url": "https://group.mercedes-benz.com/investors/reports-news/ad-hoc/adhoc-release-453568.html"
+  },
+  {
+   "label": "EconoTimes – Mercedes-Benz cuts 2026 earnings outlook as China sales fall 29% (Oct 2026)",
+   "url": "https://econotimes.com/Mercedes-Benz-Cuts-2026-Earnings-Outlook-as-China-Sales-Fall-29-1764476"
+  },
+  {
+   "label": "Bernama – Mercedes-Benz outlook cut (Oct 2026)",
+   "url": "https://bernama.com/en/world/news.php?id=2626528"
+  },
+  {
+   "label": "Electrek – Polestar 2 production ends (28 Oct)",
+   "url": "https://electrek.co/2026/10/28/when-one-door-closes-polestar-2-production-ends-and-what-might-come-next/"
+  },
+  {
+   "label": "Automotive News – Polestar launches Polestar 4 SUV amid losses and US market exit (29 Oct)",
+   "url": "https://www.autonews.com/volvo/polestar/ane-polestar-4-suv-product-offensive-1029/"
+  },
+  {
+   "label": "Drive Tesla Canada – Polestar 2 production ends after more than 200,000 cars (Oct 2026)",
+   "url": "https://driveteslacanada.ca/news/polestar-2-production-ends-china-2026/"
+  },
+  {
+   "label": "electrive – EU Auto Package: committee vote to relax CO2 rules (23 Oct)",
+   "url": "https://www.electrive.com/2026/10/23/eu-auto-package-committee-vote-to-relax-co%E2%82%82-rules/"
+  },
+  {
+   "label": "Finviz – Timken to announce Q3 2026 results on 4 November",
+   "url": "https://finviz.com/news/402228/timken-to-announce-third-quarter-2026-financial-results-on-november-4"
+  },
+  {
+   "label": "NSK – FY2026 Q1 results",
+   "url": "https://www.nsk.com/company/investors/ir-news/2026/financial-results-for-q1-fy2026--consolidated-/"
+  }
+ ],
+ "note": "All summaries are paraphrased. Financial figures come from company releases as reported by secondary outlets and may differ slightly between sources."
+}
